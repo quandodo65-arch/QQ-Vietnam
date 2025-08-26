@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>SPX Clone - Tạo đơn & Tính giá cước</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #FF4D00; /* Nền cam SPX */
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+    form {
+      background-color: white;
+      border-radius: 10px;
+      padding: 30px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #FF4D00; /* Tiêu đề cam chuẩn */
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    fieldset {
+      border: 1px solid #FF4D00;
+      border-radius: 8px;
+      padding: 18px 22px;
+      margin-bottom: 25px;
+    }
+    legend {
+      font-weight: bold;
+      color: #FF4D00;
+      font-size: 1.1rem;
+    }
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: 600;
+      color: #333; /* chữ rõ ràng */
+    }
+    input {
+      width: 100%;
+      padding: 8px 12px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+    input:focus {
+      border-color: #FF4D00;
+      outline: none;
+    }
+    input::placeholder {
+      color: #aaa;
+    }
+    button {
+      background-color: #FF4D00;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 12px 0;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      width: 100%;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #E04300;
+    }
+    #result, #saveResult {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+      min-height: 24px;
+    }
+    #result {
+      color: #FF4D00;
+    }
+    #saveResult {
+      color: #2B7A0B;
+    }
+  </style>
+</head>
+<body>
+
+
+  <form id="orderForm">
+    <h2>SPX Clone – Tạo đơn & Tính cước</h2>
+
+
+    <fieldset>
+      <legend>Thông tin người gửi</legend>
+      <label for="senderName">Tên người gửi:</label>
+      <input type="text" id="senderName" required />
+      <label for="senderPhone">SĐT người gửi:</label>
+      <input type="tel" id="senderPhone" required placeholder="098xxxxxxxx" />
+      <label for="senderAddress">Địa chỉ người gửi:</label>
+      <input type="text" id="senderAddress" required />
+    </fieldset>
+
+
+    <fieldset>
+      <legend>Thông tin người nhận</legend>
+      <label for="receiverName">Tên người nhận:</label>
+      <input type="text" id="receiverName" required />
+      <label for="receiverPhone">SĐT người nhận:</label>
+      <input type="tel" id="receiverPhone" required placeholder="098xxxxxxxx" />
+      <label for="receiverAddress">Địa chỉ người nhận:</label>
+      <input type="text" id="receiverAddress" required />
+    </fieldset>
+
+
+    <fieldset>
+      <legend>Vận chuyển</legend>
+      <label for="weight">Trọng lượng (kg):</label>
+      <input type="number" id="weight" min="0.1" step="0.1" required />
+      <label for="distance">Khoảng cách (km):</label>
+      <input type="number" id="distance" min="0.1" step="0.1" required />
+    </fieldset>
+
+
+    <button type="button" id="calcBtn">Tính cước</button>
+    <div id="result"></div>
+
+
+    <button type="submit">Lưu đơn</button>
+    <div id="saveResult"></div>
+  </form>
+
+
+  <script>
+    const orderForm = document.getElementById('orderForm');
+    const calcBtn = document.getElementById('calcBtn');
+    const resultDiv = document.getElementById('result');
+    const saveResultDiv = document.getElementById('saveResult');
+    let currentFee = 0;
+
+
+    calcBtn.addEventListener('click', () => {
+      saveResultDiv.textContent = '';
+      const weight = parseFloat(document.getElementById('weight').value);
+      const distance = parseFloat(document.getElementById('distance').value);
+      if (!weight || !distance) {
+        resultDiv.textContent = '❗ Nhập trọng lượng & khoảng cách hợp lệ!';
+        return;
+      }
+      currentFee = 10000 + distance * 3000 + weight * 2000;
+      resultDiv.textContent = `🚚 Cước ước tính: ${currentFee.toLocaleString()} đ`;
+    });
+
+
+    orderForm.addEventListener('submit', e => {
+      e.preventDefault();
+      saveResultDiv.textContent = '';
+      if (currentFee <= 0) {
+        saveResultDiv.style.color = 'red';
+        saveResultDiv.textContent = '❗ Hãy tính cước trước khi lưu đơn.';
+        return;
+      }
+      const order = {
+        senderName: orderForm.senderName.value.trim(),
+        senderPhone: orderForm.senderPhone.value.trim(),
+        senderAddress: orderForm.senderAddress.value.trim(),
+        receiverName: orderForm.receiverName.value.trim(),
+        receiverPhone: orderForm.receiverPhone.value.trim(),
+        receiverAddress: orderForm.receiverAddress.value.trim(),
+        weight: orderForm.weight.value,
+        distance: orderForm.distance.value,
+        fee: currentFee
+      };
+      const orders = JSON.parse(localStorage.getItem('orders')) || [];
+      orders.push(order);
+      localStorage.setItem('orders', JSON.stringify(orders));
+      saveResultDiv.style.color = '#2B7A0B';
+      saveResultDiv.textContent = '✅ Đơn được lưu thành công!';
+      orderForm.reset();
+      resultDiv.textContent = '';
+      currentFee = 0;
+    });
+  </script>
+</body>
+</html>
+
+
+
+
