@@ -1,0 +1,356 @@
+!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SPX Clone - Giao Diện</title>
+
+
+  <!-- Google Font Roboto -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #fff;
+      color: #333;
+    }
+    a { text-decoration: none; color: inherit; }
+
+
+    /* HEADER */
+    header {
+      background-color: #ff4d00;
+      box-shadow: 0 2px 5px rgba(255, 77, 0, 0.4);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    header .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #fff;
+    }
+    nav ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    nav ul li a {
+      color: #fff;
+      font-weight: 600;
+      padding: 8px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    nav ul li a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    nav ul li.login a {
+      background-color: #fff;
+      color: #ff4d00;
+      font-weight: 700;
+      padding: 8px 20px;
+      border-radius: 25px;
+    }
+
+
+    /* BANNER */
+    .banner {
+      background-image: url('https://via.placeholder.com/1200x320/ff4d00/fff?text=SPX+Express+Banner');
+      background-size: cover;
+      background-position: center;
+      height: 320px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+    }
+
+
+    .section {
+      padding: 40px 30px;
+      border-bottom: 1px solid #eee;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .section h2 {
+      color: #ff4d00;
+      margin-bottom: 25px;
+      font-weight: 700;
+    }
+
+
+    .tracking-form {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .tracking-form input {
+      padding: 14px 20px;
+      border-radius: 25px;
+      border: 1.5px solid #ddd;
+      width: 300px;
+      font-size: 1rem;
+    }
+    .tracking-form button {
+      background-color: #ff4d00;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 25px;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+
+    .create-box {
+      max-width: 720px;
+      margin: 50px auto;
+      background: #fff5f0;
+      border-radius: 15px;
+      padding: 30px 40px;
+      box-shadow: 0 3px 12px rgba(255, 77, 0, 0.2);
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #ff4d00;
+    }
+    .create-box button {
+      margin-top: 20px;
+      background-color: #ff4d00;
+      color: white;
+      border-radius: 30px;
+      padding: 14px 48px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border: none;
+    }
+
+
+    .form-box input,
+    .form-box select {
+      width: 100%;
+      padding: 14px 18px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+
+    .form-box button {
+      width: 100%;
+      padding: 16px 0;
+      background-color: #ff4d00;
+      color: white;
+      font-weight: 700;
+      font-size: 1.25rem;
+      border: none;
+      border-radius: 30px;
+    }
+
+
+    footer {
+      background-color: #222;
+      color: #ccc;
+      text-align: center;
+      padding: 22px 0;
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #ff4d00;
+    }
+
+
+    @media (max-width: 700px) {
+      .tracking-form {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAeXZvh_AJz2hvuH7-jrXCrdwHo9MPkE_E",
+    authDomain: "svn-line.firebaseapp.com",
+    databaseURL: "https://svn-line-default-rtdb.firebaseio.com",
+    projectId: "svn-line",
+    storageBucket: "svn-line.appspot.com",
+    messagingSenderId: "506846971109",
+    appId: "1:506846971109:web:b3cc3c0776fc5fa8d6400"
+  };
+
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+
+  // Lắng nghe khi submit form
+  const form = document.getElementById("donForm");
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+
+    // Sinh SKU tự động
+    const now = new Date();
+    const sku = "SPX-" + now.getFullYear().toString()
+              + (now.getMonth()+1).toString().padStart(2,'0')
+              + now.getDate().toString().padStart(2,'0')
+              + now.getHours().toString().padStart(2,'0')
+              + now.getMinutes().toString().padStart(2,'0')
+              + now.getSeconds().toString().padStart(2,'0');
+
+
+    // Lấy dữ liệu từ form
+    const data = {
+      sku: sku, // SKU sinh ngầm
+      tenNguoiGui: form.tenNguoiGui.value,
+      diaChiNguoiGui: form.diaChiNguoiGui.value,
+      tenNguoiNhan: form.tenNguoiNhan.value,
+      diaChiNguoiNhan: form.diaChiNguoiNhan.value,
+      tenSanPham: form.tenSanPham.value,
+      khoiLuong: parseFloat(form.khoiLuong.value),
+      soKm: parseFloat(form.sokm.value),
+      dichVu: form.dichVu.value,
+      thoiGian: new Date().toLocaleString(),
+      trangThai: "Chờ xử lý"
+    };
+
+
+    const donRef = push(ref(db, "donhang"));
+    set(donRef, data).then(() => {
+      alert("✅ Tạo đơn thành công!\nMã SKU: " + sku);
+      form.reset();
+    }).catch((err) => {
+      alert("❌ Lỗi: " + err.message);
+    });
+  });
+</script>
+
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">SPX Clone</div>
+    <nav>
+      <ul>
+        <li><a href="#">Trang chủ</a></li>
+        <li><a href="#">Dịch vụ</a></li>
+        <li><a href="cost.html">Ước tính cước</a></li>
+        <li><a href="#">Hỗ trợ</a></li>
+        <li><a href="#">Tuyển dụng</a></li>
+        <li class="login"><a href="login.html">Đăng nhập</a></li>
+      </ul>
+    </nav>
+  </header>
+
+
+  <!-- BANNER -->
+  <div class="banner">
+    Giao hàng nhanh – Uy tín – Tiện lợi
+  </div>
+
+
+  <!-- TRA CỨU -->
+  <section class="section">
+    <h2>📦 Tra cứu vận đơn</h2>
+    <form class="tracking-form">
+      <input type="text" placeholder="Nhập mã vận đơn" required />
+      <button type="submit">Tra cứu</button>
+    </form>
+  </section>
+
+
+  <!-- 4. Ô vuông tạo đơn -->
+  <section class="section">
+    <div class="create-box">
+      🚀 Bạn có đơn hàng cần giao? <br />
+      <a href="#form-create"><button>Tạo đơn ngay</button></a>
+    </div>
+  </section>
+
+
+  <!-- 5. FORM TẠO ĐƠN GIAO HÀNG -->
+  <section class="section" id="form-create">
+    <h2 style="text-align:center;">📝 Tạo đơn giao hàng</h2>
+    <div style="
+      max-width: 640px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      padding: 30px 40px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    ">
+      <form class="form-box" id="donForm">
+        <h4 style="color:#ff4d00;">Thông tin người gửi</h4>
+        <input type="text" name="tenNguoiGui" placeholder="Tên người gửi" required />
+        <input type="text" name="diaChiNguoiGui" placeholder="Địa chỉ người gửi" required />
+
+
+        <h4 style="color:#ff4d00;">Thông tin người nhận</h4>
+        <input type="text" name="tenNguoiNhan" placeholder="Tên người nhận" required />
+        <input type="text" name="diaChiNguoiNhan" placeholder="Địa chỉ người nhận" required />
+
+
+        <h4 style="color:#ff4d00;">Thông tin đơn hàng</h4>
+        <input type="text" name="tenSanPham" placeholder="Tên sản phẩm" required />
+        <input type="number" name="khoiLuong" placeholder="Khối lượng (gram)" required min="1" />
+        <input type="number" name="sokm" placeholder="Số km vận chuyển" required min="1" />
+
+
+        <select name="dichVu" required>
+          <option value="" disabled selected>Chọn dịch vụ</option>
+          <option value="standard">Dịch vụ tiêu chuẩn</option>
+          <option value="express">Giao hàng nhanh</option>
+        </select>
+
+
+        <button type="submit">Tạo đơn</button>
+      </form>
+    </div>
+  </section>
+
+
+  <!-- Iframe ẩn -->
+  <iframe name="hidden_iframe" style="display:none;"></iframe>
+
+
+  <!-- LIÊN HỆ -->
+  <section class="section contact">
+    <h2>📞 Liên hệ & Hỗ trợ</h2>
+    <p><strong>Hotline:</strong> 1900 1234</p>
+    <p><strong>Email:</strong> hotro@spxclone.vn</p>
+    <p><strong>Zalo:</strong> <a href="https://zalo.me/123456" target="_blank">https://zalo.me/123456</a></p>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer>
+    © 2025 SPX Clone – <a href="#">Chính sách</a> – <a href="#">Hướng dẫn</a>
+  </footer>
+</body>
+</html>
+
+
