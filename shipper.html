@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipper - Giao Hàng (Nâng cấp)</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #f4f4f4; }
+    header { background-color: #FF5B00; color: white; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; }
+    .container { max-width: 960px; margin: 0 auto; padding: 20px; }
+    .summary, .filter-bar { background-color: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 20px; }
+    .summary div, .filter-bar div { font-weight: bold; font-size: 18px; color: #333; margin-bottom: 10px; }
+    .order-card { background-color: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s ease; }
+    .order-card:hover { transform: scale(1.01); }
+    .order-header { font-weight: bold; color: #FF5B00; font-size: 18px; margin-bottom: 8px; }
+    .order-info { margin: 6px 0; }
+    .status-select, .shipper-select { padding: 6px; border-radius: 6px; border: 1px solid #ccc; }
+    .update-btn { background-color: #FF5B00; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .update-btn:hover { background-color: #e04a00; }
+    #map { height: 400px; margin-top: 20px; border-radius: 12px; }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <header>📦 Giao Diện Shipper - Quản Lý Đơn Hàng</header>
+  <div class="container">
+    <div class="filter-bar">
+      <label>Lọc trạng thái:
+        <select id="filter-status" onchange="filterOrders()">
+          <option value="tatca">Tất cả</option>
+          <option value="Chờ lấy">Chờ lấy</option>
+          <option value="Đang giao">Đang giao</option>
+          <option value="Giao thành công">Giao thành công</option>
+          <option value="Thất bại">Thất bại</option>
+        </select>
+      </label>
+      <label>Shipper ID: <input type="text" id="filter-shipper" oninput="filterOrders()" placeholder="shipper001" /></label>
+    </div>
+
+
+    <div class="summary" id="summary-box">
+      <div>🧾 Tổng đơn: <span id="total-orders">0</span></div>
+      <div>✅ Đã giao: <span id="delivered-orders">0</span></div>
+      <div>💰 Tổng tiền: <span id="total-amount">0đ</span></div>
+    </div>
+    <div id="orders-container"></div>
+    <div id="map"></div>
+  </div>
+
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAeXZvh_AJz2hvuH7-jrXCrdwHo9MPkE_E",
+      authDomain: "svn-line.firebaseapp.com",
+      databaseURL: "https://svn-line-default-rtdb.firebaseio.com",
+      projectId: "svn-line",
+      storageBucket: "svn-line.appspot.com",
+      messagingSenderId: "506846971109",
+      appId: "1:506846971109:web:b3cc3c0776fc5fa8d6400"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    let allOrders = [];
+    let map;
+
+
+    function renderMap(lat, lng) {
+      if (!map) {
+        map = L.map('map').setView([lat, lng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+      }
+      L.marker([lat, lng]).addTo(map);
+    }
+
+
+    function renderOrders(data) {
+      const container = document.getElementById("orders-container");
+      container.innerHTML = "";
+      let total = 0, delivered = 0, amount = 0;
+      const filterStatus = document.getElementById("filter-status").value;
+      const filterShipper = document.getElementById("filter-shipper").value.trim();
+
+
+      data.forEach(o => {
+        const d = o.data;
+        const matchStatus = filterStatus === "tatca" || d.trangThai === filterStatus;
+        const matchShipper = !filterShipper || (d.shipperID === filterShipper);
+        if (!matchStatus || !matchShipper) return;
+
+
+        total++;
+        if (d.trangThai === "Giao thành công") delivered++;
+        amount += parseFloat(d.phiThuHo || 0);
+
+
+        const card = document.createElement("div");
+        card.className = "order-card";
+        card.innerHTML = `
+          <div class="order-header">Đơn #${o.key}</div>
+          <div class="order-info">Người nhận: ${d.tenNguoiNhan || '-'} | ${d.soDienThoai || '-'}</div>
+          <div class="order-info">Địa chỉ: ${d.diaChiNguoiNhan || '-'}</div>
+          <div class="order-info">Tiền thu hộ: ${(d.phiThuHo || 0).toLocaleString()}đ</div>
+          <div class="order-info">Shipper: ${d.shipperID || 'Không rõ'}</div>
+          <div class="order-info">Trạng thái:
+            <select class="status-select" onchange="capNhatTrangThai('${o.key}', this.value)">
+              <option${d.trangThai === "Chờ lấy" ? " selected" : ""}>Chờ lấy</option>
+              <option${d.trangThai === "Đang giao" ? " selected" : ""}>Đang giao</option>
+              <option${d.trangThai === "Giao thành công" ? " selected" : ""}>Giao thành công</option>
+              <option${d.trangThai === "Thất bại" ? " selected" : ""}>Thất bại</option>
+            </select>
+            <button class="update-btn" onclick="confirmUpdate('${o.key}')">Cập nhật</button>
+          </div>
+        `;
+        container.appendChild(card);
+
+
+        // demo vị trí (có thể lưu toạ độ trong firebase để hiển thị đúng)
+        if (d.lat && d.lng) renderMap(d.lat, d.lng);
+      });
+
+
+      document.getElementById("total-orders").innerText = total;
+      document.getElementById("delivered-orders").innerText = delivered;
+      document.getElementById("total-amount").innerText = amount.toLocaleString() + "đ";
+    }
+
+
+    function filterOrders() {
+      renderOrders(allOrders);
+    }
+
+
+    function capNhatTrangThai(id, trangThaiMoi) {
+      db.ref("donhang/" + id + "/trangThai").set(trangThaiMoi);
+    }
+
+
+    function confirmUpdate(id) {
+      db.ref("donhang/" + id + "/trangThai").once("value").then(snapshot => {
+        alert("✅ Đơn #" + id + " đã cập nhật trạng thái: " + snapshot.val());
+      });
+    }
+
+
+    db.ref("donhang").on("value", snapshot => {
+      const list = [];
+      snapshot.forEach(child => list.push({ key: child.key, data: child.val() }));
+      allOrders = list;
+      renderOrders(allOrders);
+    });
+  </script>
+</body>
+</html>
+
+
