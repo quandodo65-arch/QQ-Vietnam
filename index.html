@@ -1,356 +1,3130 @@
-
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
+  <title>Đặt món online</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SPX Clone - Giao Diện</title>
-
-
-  <!-- Google Font Roboto -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
-
-
   <style>
-    * { box-sizing: border-box; }
+    :root {
+      --bg-body: #ffffff;
+      --bg-app: #ffffff;
+      --bg-card: #ffffff;
+      --bg-subtle: #fffaf7;
+      --border-subtle: #f3f4f6;
+      --border-soft: #e5e7eb;
+      --primary: #ee4d2d;
+      --primary-soft: rgba(238, 77, 45, 0.06);
+      --primary-strong: #e64522;
+      --accent: #ffbf00;
+      --accent-soft: rgba(255, 191, 0, 0.16);
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --shadow-card: 0 4px 12px rgba(15, 23, 42, 0.06);
+      --shadow-soft: 0 3px 8px rgba(15, 23, 42, 0.08);
+      --spacing: 16px;
+
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: var(--bg-body);
+      color: var(--text-main);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: 'Roboto', sans-serif;
-      background: #fff;
-      color: #333;
+      padding: 8px 8px 72px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background: #ffffff;
+      color: var(--text-main);
     }
-    a { text-decoration: none; color: inherit; }
 
+    .app {
+      width: 100%;
+      max-width: 1240px;
+    }
 
-    /* HEADER */
-    header {
-      background-color: #ff4d00;
-      box-shadow: 0 2px 5px rgba(255, 77, 0, 0.4);
-      padding: 15px 30px;
+    /* ===== HEADER GIỐNG APP FOOD, TỐI GIẢN ===== */
+    .app-header {
+      margin-bottom: 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #f3f4f6;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+
+    .app-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .app-location {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .loc-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: var(--primary-strong);
+      flex-shrink: 0;
+    }
+
+    .loc-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .loc-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .loc-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111827;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+
+    .app-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .app-user {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      cursor: pointer;
+    }
+
+    .user-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .user-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      max-width: 150px;
+    }
+
+    .user-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #111827;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-phone {
+      font-size: 11px;
+      color: #9ca3af;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .loc-change-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 4px 10px;
+      font-size: 11px;
+      background: #ffffff;
+      color: var(--primary-strong);
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .loc-change-btn:hover {
+      background: #fff3ed;
+    }
+
+    .app-search {
+      margin-bottom: 6px;
+    }
+
+    .app-search input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      font-size: 12px;
+      outline: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .app-search input::placeholder {
+      color: #9ca3af;
+    }
+
+    .app-search input:focus {
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 1px rgba(238, 77, 45, 0.18);
+    }
+
+    .app-badges-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .app-badge-pill {
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #fff7f3;
+      border: 1px solid #ffe0d3;
+      color: #b45309;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      padding: 14px 12px 16px;
+      border: 1px solid #f3f4f6;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 6px;
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    h1::before {
+      content: "🍽️";
+      font-size: 18px;
+    }
+
+    .subtitle {
+      margin: 2px 0 12px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        padding: 0 0 80px;
+        background: #ffffff;
+      }
+      .app {
+        max-width: 100%;
+      }
+      .app-header {
+        border-radius: 0;
+        box-shadow: none;
+        border-left: none;
+        border-right: none;
+      }
+      .card {
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+        padding: 10px 8px 90px;
+      }
+      .layout {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .loc-value {
+        max-width: 140px;
+      }
+      .app-header-actions {
+        gap: 4px;
+      }
+      .user-text {
+        display: none; /* mobile chỉ hiện icon */
+      }
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #111827;
+    }
+
+    .section-title-icon {
+      font-size: 15px;
+    }
+
+    /* ===== DANH SÁCH QUÁN – HIỂN THỊ NGANG ===== */
+    .list {
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      padding: 6px;
+    }
+
+    #restaurants-list {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-height: none;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+      scroll-snap-type: x mandatory;
+    }
+
+    #restaurants-list::-webkit-scrollbar {
+      height: 4px;
+    }
+    #restaurants-list::-webkit-scrollbar-thumb {
+      background: #e5e7eb;
+      border-radius: 999px;
+    }
+
+    .restaurant-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 8px 9px;
+      cursor: pointer;
+      border: 1px solid #e5e7eb;
+      transition: all 0.12s ease-out;
+      display: flex;
+      gap: 8px;
+      min-width: 210px;
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+    }
+
+    .restaurant-card:hover {
+      border-color: rgba(238, 77, 45, 0.6);
+      box-shadow: 0 3px 10px rgba(238, 77, 45, 0.16);
+      transform: translateY(-1px);
+    }
+
+    .restaurant-card.selected {
+      border-color: var(--primary-strong);
+      box-shadow: 0 4px 12px rgba(238, 77, 45, 0.22);
+      background: linear-gradient(135deg, #fff9f5, #ffffff);
+    }
+
+    .restaurant-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: #fff7f3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      overflow: hidden; /* cho ảnh cắt gọn trong khung */
+    }
+
+    .thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .restaurant-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .restaurant-name-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .restaurant-name-text {
+      font-weight: 600;
+      font-size: 13px;
+      color: #111827;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .badge-mini {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary-strong);
+      flex-shrink: 0;
+    }
+
+    .restaurant-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+      font-size: 10px;
+      color: #6b7280;
+    }
+
+    .restaurant-tag-pill {
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #f3f4f6;
+    }
+
+    .restaurant-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* ===== LIST MÓN ĂN ===== */
+    .food-list {
+      max-height: 70vh;
+      overflow: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      padding: 6px;
+      margin-top: 4px;
+    }
+
+    .food-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      border: 1px solid #f3f4f6;
+    }
+
+    .food-thumb {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: #f9fafb;
+      flex-shrink: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .food-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .food-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .food-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: #111827;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .food-price {
+      font-size: 12px;
+      color: #ef4444;
+      margin-top: 2px;
+      font-weight: 600;
+    }
+
+    .food-status {
+      font-size: 11px;
+      margin-top: 2px;
+      color: #16a34a;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: none;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.12s ease-out;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff7337, #ee4d2d);
+      color: #ffffff;
+      box-shadow: 0 3px 8px rgba(238, 77, 45, 0.35);
+      border: 1px solid #ee4d2d;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.04);
+      transform: translateY(-0.5px);
+      box-shadow: 0 4px 11px rgba(238, 77, 45, 0.5);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: #111827;
+      border: 1px solid #e5e7eb;
+    }
+
+    .btn-secondary:hover {
+      background: #fff7f3;
+      border-color: #fecaca;
+    }
+
+    .btn.small {
+      padding: 4px 8px;
+      font-size: 11px;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* ===== CHECKOUT SHELL (CỘT PHẢI) ===== */
+    .checkout-shell {
+      position: sticky;
+      top: 6px;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid #f3f4f6;
+      box-shadow: var(--shadow-soft);
+      padding: 10px 9px 12px;
+      display: none; /* desktop: chỉ hiện khi có món */
+    }
+
+    .checkout-shell.visible {
+      display: block;
+    }
+
+    .cart {
+      border-radius: 10px;
+      border: 1px solid #f3f4f6;
+      background: #ffffff;
+      padding: 8px;
+      max-height: 50vh;
+      overflow: auto;
+    }
+
+    .cart-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      font-size: 12px;
+      margin-bottom: 4px;
+      color: #111827;
     }
-    header .logo {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: #fff;
+
+    .cart-item-name {
+      flex: 1;
+      margin-right: 6px;
     }
-    nav ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      gap: 20px;
+
+    .cart-item-qty {
+      display: inline-flex;
       align-items: center;
-    }
-    nav ul li a {
-      color: #fff;
-      font-weight: 600;
-      padding: 8px 15px;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-    }
-    nav ul li a:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-    nav ul li.login a {
-      background-color: #fff;
-      color: #ff4d00;
-      font-weight: 700;
-      padding: 8px 20px;
-      border-radius: 25px;
+      gap: 4px;
+      font-size: 11px;
     }
 
+    .cart-item-qty button {
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      cursor: pointer;
+      font-size: 11px;
+      color: #111827;
+    }
 
-    /* BANNER */
-    .banner {
-      background-image: url('https://via.placeholder.com/1200x320/ff4d00/fff?text=SPX+Express+Banner');
-      background-size: cover;
-      background-position: center;
-      height: 320px;
+    .cart-item-qty button:hover {
+      background: #fee2e2;
+      border-color: #fecaca;
+    }
+
+    .field {
+      margin-top: 6px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 12px;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #111827;
+      display: flex;
       align-items: center;
-      color: white;
-      font-size: 2.5rem;
-      font-weight: 700;
-      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+      gap: 6px;
     }
 
-
-    .section {
-      padding: 40px 30px;
-      border-bottom: 1px solid #eee;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .section h2 {
-      color: #ff4d00;
-      margin-bottom: 25px;
-      font-weight: 700;
+    .label-icon {
+      font-size: 14px;
     }
 
+    input, textarea, select {
+      padding: 6px 8px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      font-size: 12px;
+      outline: none;
+      resize: vertical;
+      background: #ffffff;
+      color: #111827;
+    }
 
-    .tracking-form {
+    input::placeholder,
+    textarea::placeholder {
+      color: #9ca3af;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 1px rgba(238, 77, 45, 0.25);
+    }
+
+    select {
+      padding-right: 28px;
+      background-color: #ffffff;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .divider {
+      border-top: 1px dashed #e5e7eb;
+      margin: 8px 0;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary-strong);
+      font-size: 11px;
+      margin-left: 4px;
+    }
+
+    .warning {
+      color: #ef4444;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .success {
+      color: #16a34a;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    /* Delivery options */
+    .delivery-options {
       display: flex;
-      gap: 15px;
-      justify-content: center;
+      gap: 6px;
       flex-wrap: wrap;
-    }
-    .tracking-form input {
-      padding: 14px 20px;
-      border-radius: 25px;
-      border: 1.5px solid #ddd;
-      width: 300px;
-      font-size: 1rem;
-    }
-    .tracking-form button {
-      background-color: #ff4d00;
-      border: none;
-      padding: 14px 32px;
-      border-radius: 25px;
-      color: white;
-      font-weight: 700;
-      font-size: 1rem;
+      margin-top: 4px;
     }
 
+    .delivery-option {
+      flex: 1 1 0;
+      min-width: 0;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      padding: 6px 8px;
+      font-size: 11px;
+      cursor: pointer;
+      text-align: left;
+      color: #111827;
+    }
 
-    .create-box {
-      max-width: 720px;
-      margin: 50px auto;
-      background: #fff5f0;
-      border-radius: 15px;
-      padding: 30px 40px;
-      box-shadow: 0 3px 12px rgba(255, 77, 0, 0.2);
-      text-align: center;
-      font-size: 1.3rem;
+    .delivery-option-title {
       font-weight: 600;
-      color: #ff4d00;
+      font-size: 11px;
     }
-    .create-box button {
-      margin-top: 20px;
-      background-color: #ff4d00;
-      color: white;
-      border-radius: 30px;
-      padding: 14px 48px;
-      font-size: 1.1rem;
-      font-weight: 700;
+
+    .delivery-option-sub {
+      font-size: 10px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    .delivery-option-extra {
+      font-size: 10px;
+      margin-top: 2px;
+      color: #2563eb;
+    }
+
+    .delivery-option.selected {
+      border-color: var(--primary-strong);
+      background: #fff7f3;
+      box-shadow: 0 0 0 1px rgba(238, 77, 45, 0.25);
+    }
+
+    .schedule-wrapper {
+      margin-top: 4px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: #f9fafb;
+      border: 1px dashed #e5e7eb;
+    }
+
+    .schedule-wrapper.hidden {
+      display: none;
+    }
+
+    .schedule-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .schedule-row input,
+    .schedule-row select {
+      flex: 1;
+    }
+
+    /* Tip & toggles */
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .pill {
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      padding: 4px 10px;
+      font-size: 11px;
+      background: #f9fafb;
+      cursor: pointer;
+      color: #111827;
+    }
+
+    .pill-outline {
+      background: #ffffff;
+    }
+
+    .pill-selected {
+      background: #fff7f3;
+      border-color: var(--primary-strong);
+      color: var(--primary-strong);
+    }
+
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .switch-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Quick toolbar icon */
+    .quick-toolbar-title {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .quick-toolbar {
+      display: flex;
+      gap: 8px;
+      margin: 4px 0 6px;
+    }
+
+    .quick-icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1px solid #ffe0d3;
+      background: #fff7f3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.12s ease-out;
+      color: #b45309;
+    }
+
+    .quick-icon-btn:hover {
+      background: #ffe4d5;
+    }
+
+    .quick-icon-btn.active {
+      background: linear-gradient(135deg, #ff9260, #ee4d2d);
+      color: #ffffff;
+      box-shadow: 0 0 0 1px rgba(238, 77, 45, 0.3);
+      border-color: transparent;
+    }
+
+    .collapsible-panel {
+      margin-top: 4px;
+    }
+
+    .hidden-panel {
+      display: none;
+    }
+
+    .info-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
       border: none;
+      background: #e5e7eb;
+      color: #374151;
+      font-size: 11px;
+      cursor: help;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      margin-left: auto;
     }
 
-
-    .form-box input,
-    .form-box select {
-      width: 100%;
-      padding: 14px 18px;
-      margin-top: 10px;
-      margin-bottom: 20px;
-      border: 1.5px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
+    .info-dot:hover {
+      background: #d1d5db;
     }
 
-
-    .form-box button {
+    /* CTA button */
+    #place-order-btn {
       width: 100%;
-      padding: 16px 0;
-      background-color: #ff4d00;
-      color: white;
-      font-weight: 700;
-      font-size: 1.25rem;
+      margin-top: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      background: linear-gradient(135deg, #ff7337, #ee4d2d);
+      box-shadow: 0 8px 20px rgba(238, 77, 45, 0.45);
       border: none;
-      border-radius: 30px;
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
 
-
-    footer {
-      background-color: #222;
-      color: #ccc;
-      text-align: center;
-      padding: 22px 0;
-      font-size: 0.9rem;
-    }
-    footer a {
-      color: #ff4d00;
+    #place-order-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 26px rgba(238, 77, 45, 0.58);
+      filter: brightness(1.03);
     }
 
+    #place-order-btn:disabled {
+      background: #9ca3af;
+      box-shadow: none;
+      color: #f9fafb;
+    }
 
-    @media (max-width: 700px) {
-      .tracking-form {
-        flex-direction: column;
-        align-items: center;
+    /* Header shipping info */
+    .shipping-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 0;
+      cursor: default;
+    }
+
+    .shipping-section-title-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .shipping-section-summary {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: right;
+      max-width: 55%;
+    }
+
+    /* ===== FAB GIỎ HÀNG & OVERLAY (MOBILE) ===== */
+    .cart-fab {
+      position: fixed;
+      bottom: 80px;
+      right: 16px;
+      width: 52px;
+      height: 52px;
+      border-radius: 999px;
+      border: none;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      background: linear-gradient(135deg, #ff7337, #ee4d2d);
+      color: #ffffff;
+      font-size: 20px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      z-index: 40;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: all 0.15s ease-out;
+    }
+
+    .cart-fab.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .cart-fab-count {
+      min-width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #ef4444;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: -4px;
+    }
+
+    .checkout-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      display: none;
+      z-index: 25;
+    }
+
+    .checkout-overlay.show {
+      display: block;
+    }
+
+    .checkout-sheet-header {
+      display: none;
+    }
+
+    /* ===== BOTTOM NAV ===== */
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 56px;
+      border-top: 1px solid #e5e7eb;
+      background: #ffffff;
+      display: none;
+      z-index: 33;
+      align-items: center;
+      justify-content: space-around;
+    }
+
+    .bottom-nav-item {
+      flex: 1;
+      height: 100%;
+      border: none;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #6b7280;
+      gap: 2px;
+      cursor: pointer;
+    }
+
+    .bottom-nav-item-icon {
+      font-size: 18px;
+    }
+
+    .bottom-nav-item.active {
+      color: var(--primary-strong);
+    }
+
+    @media (max-width: 900px) {
+      .checkout-shell {
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 56px;
+        max-height: 78vh;
+        background: #ffffff;
+        border-radius: 16px 16px 0 0;
+        padding: 10px 12px 90px;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+        z-index: 30;
+        overflow: auto;
+        border: none;
       }
+
+      .checkout-shell.open {
+        display: block;
+      }
+
+      .checkout-sheet-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+
+      #checkout-close-btn {
+        border: none;
+        border-radius: 999px;
+        background: #f3f4f6;
+        width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      .cart-fab {
+        display: flex;
+      }
+
+      #place-order-btn {
+        position: fixed;
+        left: 8px;
+        right: 8px;
+        bottom: 56px;
+        border-radius: 999px;
+        padding: 10px 16px;
+        z-index: 35;
+      }
+
+      .bottom-nav {
+        display: flex;
+      }
+    }
+
+    /* ===== LOGIN MODAL ===== */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 60;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-card {
+      position: relative;
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 12px 12px 14px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.45);
+      z-index: 61;
+    }
+
+    .modal-card-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      border-radius: 999px;
+      border: none;
+      background: #f3f4f6;
+      width: 26px;
+      height: 26px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .modal-close-btn:hover {
+      background: #e5e7eb;
     }
   </style>
 </head>
 <body>
-<!-- Firebase SDK -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+  <div class="app">
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="app-header-top">
+        <div class="app-location">
+          <div class="loc-icon">📍</div>
+          <div class="loc-text">
+            <div class="loc-label">Giao đến</div>
+            <div class="loc-value" id="display-address">Chưa có địa chỉ</div>
+          </div>
+        </div>
+        <div class="app-header-actions">
+          <div class="app-user" id="app-user">
+            <div class="user-avatar">👤</div>
+            <div class="user-text">
+              <div class="user-name" id="user-name-display">Khách lạ</div>
+              <div class="user-phone" id="user-phone-display">
+                Đăng nhập để lưu địa chỉ
+              </div>
+            </div>
+          </div>
+          <button class="loc-change-btn" type="button">
+            <span>Đổi địa chỉ</span>
+            <span>✏️</span>
+          </button>
+        </div>
+      </div>
+      <div class="app-search">
+        <input type="text" placeholder="Tìm món hoặc quán ăn (demo, chưa lọc)" />
+      </div>
+      <div class="app-badges-row">
+        <div class="app-badge-pill">🔥 Đang giảm giá</div>
+        <div class="app-badge-pill">🚚 Free ship</div>
+        <div class="app-badge-pill">⏱ Giao nhanh</div>
+      </div>
+    </header>
 
+    <div class="card">
+      <h1>Đặt món online</h1>
+      <p class="subtitle">
+        Chọn quán, chọn món (có thể nhiều quán), nhập thông tin giao hàng và gửi đơn. Giao diện tối giản giống app food.
+      </p>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAeXZvh_AJz2hvuH7-jrXCrdwHo9MPkE_E",
-    authDomain: "svn-line.firebaseapp.com",
-    databaseURL: "https://svn-line-default-rtdb.firebaseio.com",
-    projectId: "svn-line",
-    storageBucket: "svn-line.appspot.com",
-    messagingSenderId: "506846971109",
-    appId: "1:506846971109:web:b3cc3c0776fc5fa8d6400"
-  };
+      <div class="layout">
+        <!-- Cột trái: Quán + menu -->
+        <div>
+          <div class="section-title">
+            <span class="section-title-icon">🏪</span>
+            <span>Quán ăn gần bạn</span>
+            <span class="badge" id="restaurant-count">0</span>
+          </div>
+          <div class="list">
+            <div id="restaurants-list"></div>
+          </div>
 
+          <div class="divider" style="margin-top:10px;"></div>
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+          <div class="section-title">
+            <span class="section-title-icon">📋</span>
+            <span>Thực đơn</span>
+            <span class="badge" id="current-restaurant-name">Chưa chọn quán</span>
+          </div>
+          <div class="food-list" id="foods-list">
+            <div class="hint" style="padding: 8px;">
+              Hãy chọn một quán ở trên để xem menu và chọn món ăn.
+            </div>
+          </div>
 
+          <!-- Món phụ -->
+          <div class="section-title" style="margin-top:8px;">
+            <span class="section-title-icon">✨</span>
+            <span>Món phụ của quán</span>
+          </div>
+          <div class="food-list" id="extras-list">
+            <div class="hint" style="padding:8px;">
+              Hãy chọn một quán để xem món phụ (topping, thêm trứng,...).
+            </div>
+          </div>
+        </div>
 
-  // Lắng nghe khi submit form
-  const form = document.getElementById("donForm");
-  form.addEventListener("submit", function(e) {
-    e.preventDefault();
+        <!-- Cột phải: Checkout -->
+        <div>
+          <div class="checkout-shell">
+            <div class="checkout-sheet-header">
+              <div class="section-title" style="margin-bottom:0;">
+                <span class="section-title-icon">🛒</span>
+                <span>Giỏ hàng & thanh toán</span>
+              </div>
+              <button id="checkout-close-btn" type="button">✕</button>
+            </div>
 
+            <!-- Giỏ hàng -->
+            <div class="section-title">
+              <span class="section-title-icon">🛒</span>
+              <span>Giỏ hàng của bạn</span>
+            </div>
+            <div class="cart" id="cart">
+              <div class="hint">
+                Chưa có món nào. Hãy bấm "Thêm" ở danh sách món để cho vào giỏ.
+              </div>
+            </div>
 
-    // Sinh SKU tự động
-    const now = new Date();
-    const sku = "SPX-" + now.getFullYear().toString()
-              + (now.getMonth()+1).toString().padStart(2,'0')
-              + now.getDate().toString().padStart(2,'0')
-              + now.getHours().toString().padStart(2,'0')
-              + now.getMinutes().toString().padStart(2,'0')
-              + now.getSeconds().toString().padStart(2,'0');
+            <div class="divider"></div>
 
+            <!-- Toolbar icon (ẩn khi chưa có món) -->
+            <div id="quick-toolbar-wrapper" style="display:none;">
+              <div class="quick-toolbar-title">
+                <span>⚡</span>
+                <span>Tuỳ chọn nhanh</span>
+              </div>
+              <div class="quick-toolbar" aria-label="Tuỳ chọn nhanh">
+                <button class="quick-icon-btn" data-panel="voucher-panel" title="Mã khuyến mãi">
+                  🏷️
+                </button>
+                <button class="quick-icon-btn" data-panel="extras-panel" title="Ưu đãi & tuỳ chọn thêm">
+                  ✨
+                </button>
+                <button class="quick-icon-btn" data-panel="payment-panel" title="Thanh toán">
+                  💳
+                </button>
+              </div>
+            </div>
 
-    // Lấy dữ liệu từ form
-    const data = {
-      sku: sku, // SKU sinh ngầm
-      tenNguoiGui: form.tenNguoiGui.value,
-      diaChiNguoiGui: form.diaChiNguoiGui.value,
-      tenNguoiNhan: form.tenNguoiNhan.value,
-      diaChiNguoiNhan: form.diaChiNguoiNhan.value,
-      tenSanPham: form.tenSanPham.value,
-      khoiLuong: parseFloat(form.khoiLuong.value),
-      soKm: parseFloat(form.sokm.value),
-      dichVu: form.dichVu.value,
-      thoiGian: new Date().toLocaleString(),
-      trangThai: "Chờ xử lý"
-    };
+            <!-- Mã khuyến mãi -->
+            <div id="voucher-panel" class="collapsible-panel hidden-panel">
+              <div class="section-title">
+                <span class="section-title-icon">🏷️</span>
+                <span>Mã khuyến mãi</span>
+                <button class="info-dot" title="Mã được tạo từ Admin › Mã giảm giá / Free ship">?</button>
+              </div>
+              <div class="field">
+                <input id="voucher-code-input" placeholder="Nhập mã (nếu có)" />
+              </div>
+              <button id="apply-voucher-btn" class="btn btn-secondary" style="width: 100%; margin-top: 4px;">
+                Áp dụng mã
+              </button>
+              <div id="voucher-message" class="hint"></div>
+              <div class="divider"></div>
+            </div>
 
+            <!-- Thông tin giao hàng -->
+            <div>
+              <div class="shipping-section-header">
+                <div class="shipping-section-title-left">
+                  <span class="section-title-icon">👤</span>
+                  <span class="section-title">Thông tin giao hàng</span>
+                </div>
+                <div class="shipping-section-summary">
+                  Hệ thống sẽ tự nhớ thông tin sau lần đầu bạn nhập.
+                </div>
+              </div>
 
-    const donRef = push(ref(db, "donhang"));
-    set(donRef, data).then(() => {
-      alert("✅ Tạo đơn thành công!\nMã SKU: " + sku);
-      form.reset();
-    }).catch((err) => {
-      alert("❌ Lỗi: " + err.message);
-    });
-  });
-</script>
+              <div class="field">
+                <label><span class="label-icon">🧑</span><span>Họ tên</span></label>
+                <input id="customer-name" placeholder="Ví dụ: Nguyễn Văn A" />
+              </div>
+              <div class="field">
+                <label><span class="label-icon">📞</span><span>Số điện thoại</span></label>
+                <input id="customer-phone" placeholder="Ví dụ: 09xx xxx xxx" />
+              </div>
+              <div class="field">
+                <label><span class="label-icon">📍</span><span>Địa chỉ giao</span></label>
+                <textarea id="customer-address" rows="2" placeholder="Số nhà, đường, phường/xã, quận/huyện"></textarea>
+              </div>
+              <div class="field">
+                <label><span class="label-icon">📝</span><span>Ghi chú (tuỳ chọn)</span></label>
+                <textarea id="customer-note" rows="2" placeholder="Ví dụ: Ít đá, gọi trước khi tới..."></textarea>
+              </div>
 
+              <div class="field">
+                <label><span class="label-icon">⏱️</span><span>Thời gian giao</span></label>
+                <div class="delivery-options">
+                  <button type="button" class="delivery-option" data-delivery-option="PRIORITY">
+                    <div class="delivery-option-title">Ưu tiên ⚡</div>
+                    <div class="delivery-option-sub">Nhanh hơn, tài xế ưu tiên</div>
+                    <div class="delivery-option-extra">+5.000đ / quán</div>
+                  </button>
+                  <button type="button" class="delivery-option selected" data-delivery-option="STANDARD">
+                    <div class="delivery-option-title">Tiêu chuẩn ✅</div>
+                    <div class="delivery-option-sub">Cân bằng tốc độ & phí ship</div>
+                    <div class="delivery-option-extra">Phí cơ bản</div>
+                  </button>
+                  <button type="button" class="delivery-option" data-delivery-option="SAVER">
+                    <div class="delivery-option-title">Tiết kiệm 🕒</div>
+                    <div class="delivery-option-sub">Giao chậm hơn một chút</div>
+                    <div class="delivery-option-extra">-3.000đ / quán</div>
+                  </button>
+                </div>
+                <div class="hint" id="delivery-estimate-text">
+                  Dự kiến giao trong 30–45 phút (Tiêu chuẩn).
+                </div>
+                <button type="button" id="toggle-schedule-btn" class="btn btn-secondary small" style="margin-top: 4px;">
+                  ⏰ Hẹn giờ
+                </button>
+                <div id="schedule-wrapper" class="schedule-wrapper hidden">
+                  <div class="hint">Chọn thời gian giao sau (tuỳ theo quán có hỗ trợ).</div>
+                  <div class="schedule-row">
+                    <input type="date" id="schedule-date" />
+                    <select id="schedule-time-slot">
+                      <option value="">Chọn khung giờ</option>
+                      <option value="10:00 - 11:00">10:00 - 11:00</option>
+                      <option value="11:00 - 12:00">11:00 - 12:00</option>
+                      <option value="12:00 - 13:00">12:00 - 13:00</option>
+                      <option value="13:00 - 14:00">13:00 - 14:00</option>
+                      <option value="17:00 - 18:00">17:00 - 18:00</option>
+                      <option value="18:00 - 19:00">18:00 - 19:00</option>
+                      <option value="19:00 - 20:00">19:00 - 20:00</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="divider"></div>
+            </div>
 
-  <!-- HEADER -->
-  <header>
-    <div class="logo">SPX Clone</div>
-    <nav>
-      <ul>
-        <li><a href="#">Trang chủ</a></li>
-        <li><a href="#">Dịch vụ</a></li>
-        <li><a href="cost.html">Ước tính cước</a></li>
-        <li><a href="#">Hỗ trợ</a></li>
-        <li><a href="#">Tuyển dụng</a></li>
-        <li class="login"><a href="login.html">Đăng nhập</a></li>
-      </ul>
-    </nav>
-  </header>
+            <!-- Ưu đãi & tuỳ chọn thêm -->
+            <div id="extras-panel" class="collapsible-panel hidden-panel">
+              <div class="section-title">
+                <span class="section-title-icon">✨</span>
+                <span>Ưu đãi & tuỳ chọn thêm</span>
+              </div>
 
+              <div class="field">
+                <label><span class="label-icon">💰</span><span>Thưởng cho tài xế</span></label>
+                <div class="pill-group">
+                  <button type="button" class="pill" data-tip-value="5000">5K</button>
+                  <button type="button" class="pill" data-tip-value="10000">10K</button>
+                  <button type="button" class="pill" data-tip-value="CUSTOM">Khác</button>
+                  <button type="button" class="pill pill-outline pill-selected" data-tip-value="0">Chưa có</button>
+                </div>
+                <div class="field" id="driver-tip-custom-field" style="display: none;">
+                  <input id="driver-tip-custom" type="number" min="0" step="1000" placeholder="Nhập số tiền tip (đ)" />
+                </div>
+              </div>
 
-  <!-- BANNER -->
-  <div class="banner">
-    Giao hàng nhanh – Uy tín – Tiện lợi
+              <div class="field">
+                <label class="switch-row">
+                  <span><span class="label-icon">🎁</span>Nhận điểm thưởng / Shopee Xu</span>
+                  <input type="checkbox" id="rewards-enabled-checkbox" checked />
+                </label>
+                <div class="hint" id="rewards-hint">
+                  Điểm thưởng được tính dựa trên tổng thanh toán (ước tính).
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="switch-row">
+                  <span><span class="label-icon">🚪</span>Giao tận cửa</span>
+                  <input type="checkbox" id="door-to-door-checkbox" />
+                </label>
+              </div>
+
+              <div class="field">
+                <label class="switch-row">
+                  <span><span class="label-icon">🥢</span>Lấy dụng cụ ăn uống</span>
+                  <input type="checkbox" id="utensils-checkbox" checked />
+                </label>
+              </div>
+
+              <div class="divider"></div>
+            </div>
+
+            <!-- Thanh toán -->
+            <div id="payment-panel" class="collapsible-panel hidden-panel">
+              <div class="section-title">
+                <span class="section-title-icon">💳</span>
+                <span>Thanh toán</span>
+              </div>
+              <div class="field">
+                <label><span class="label-icon">💳</span><span>Phương thức thanh toán</span></label>
+                <select id="payment-method-select">
+                  <option value="COD">Tiền mặt khi nhận (COD)</option>
+                  <option value="WALLET">Ví điện tử</option>
+                  <option value="BANK_TRANSFER">Chuyển khoản cho quán</option>
+                </select>
+              </div>
+              <div class="divider"></div>
+            </div>
+
+            <button id="place-order-btn" class="btn btn-primary" disabled>
+              <span>🛒</span>
+              <span>Gửi đơn đặt món</span>
+            </button>
+            <div id="order-message"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <!-- Overlay & FAB giỏ hàng -->
+  <div id="checkout-overlay" class="checkout-overlay"></div>
+  <button id="cart-fab" class="cart-fab" aria-label="Mở giỏ hàng">
+    <span>🛒</span>
+    <span id="cart-fab-count" class="cart-fab-count">0</span>
+  </button>
 
-  <!-- TRA CỨU -->
-  <section class="section">
-    <h2>📦 Tra cứu vận đơn</h2>
-    <form class="tracking-form">
-      <input type="text" placeholder="Nhập mã vận đơn" required />
-      <button type="submit">Tra cứu</button>
-    </form>
-  </section>
-
-
-  <!-- 4. Ô vuông tạo đơn -->
-  <section class="section">
-    <div class="create-box">
-      🚀 Bạn có đơn hàng cần giao? <br />
-      <a href="#form-create"><button>Tạo đơn ngay</button></a>
+  <!-- LOGIN MODAL -->
+  <div id="login-modal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <button type="button" class="modal-close-btn" id="login-cancel-btn">✕</button>
+      <div class="modal-card-title">
+        <span class="section-title-icon">👤</span>
+        <span>Đăng nhập nhanh</span>
+      </div>
+      <p class="hint">
+        Lưu Họ tên, SĐT và địa chỉ mặc định của bạn. Lần sau không cần nhập lại.
+      </p>
+      <div class="field">
+        <label><span class="label-icon">🧑</span><span>Họ tên</span></label>
+        <input id="login-name" placeholder="Tên của bạn" />
+      </div>
+      <div class="field">
+        <label><span class="label-icon">📞</span><span>Số điện thoại</span></label>
+        <input id="login-phone" placeholder="Số điện thoại của bạn" />
+      </div>
+      <div class="field">
+        <label><span class="label-icon">📍</span><span>Địa chỉ mặc định</span></label>
+        <textarea id="login-address" rows="2" placeholder="Số nhà, đường, phường/xã, quận/huyện"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button type="button" class="btn btn-secondary" id="login-cancel-btn-footer" style="flex:1;">
+          Huỷ
+        </button>
+        <button type="button" class="btn btn-primary" id="login-save-btn" style="flex:1;">
+          Lưu thông tin
+        </button>
+      </div>
     </div>
-  </section>
+  </div>
 
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="bottom-nav-item active" type="button">
+      <div class="bottom-nav-item-icon">🏠</div>
+      <div>Trang chủ</div>
+    </button>
+    <button class="bottom-nav-item" type="button">
+      <div class="bottom-nav-item-icon">📦</div>
+      <div>Đơn hàng</div>
+    </button>
+    <button class="bottom-nav-item" type="button">
+      <div class="bottom-nav-item-icon">👤</div>
+      <div>Tài khoản</div>
+    </button>
+  </nav>
 
-  <!-- 5. FORM TẠO ĐƠN GIAO HÀNG -->
-  <section class="section" id="form-create">
-    <h2 style="text-align:center;">📝 Tạo đơn giao hàng</h2>
-    <div style="
-      max-width: 640px;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 16px;
-      padding: 30px 40px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-    ">
-      <form class="form-box" id="donForm">
-        <h4 style="color:#ff4d00;">Thông tin người gửi</h4>
-        <input type="text" name="tenNguoiGui" placeholder="Tên người gửi" required />
-        <input type="text" name="diaChiNguoiGui" placeholder="Địa chỉ người gửi" required />
+  <!-- Firebase + Logic -->
+  <script type="module">
+    // SDK Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      query,
+      orderBy,
+      onSnapshot,
+      getDocs,
+      where,
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+    import {
+      getDatabase,
+      ref,
+      onValue,
+      set
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        <h4 style="color:#ff4d00;">Thông tin người nhận</h4>
-        <input type="text" name="tenNguoiNhan" placeholder="Tên người nhận" required />
-        <input type="text" name="diaChiNguoiNhan" placeholder="Địa chỉ người nhận" required />
+    // Cấu hình Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAeXZvh_AJz2hvuH7-jrXCrdwHo9MPkE_E",
+      authDomain: "svn-line.firebaseapp.com",
+      databaseURL: "https://svn-line-default-rtdb.firebaseio.com",
+      projectId: "svn-line",
+      storageBucket: "svn-line.appspot.com",
+      messagingSenderId: "506846971109",
+      appId: "1:506846971109:web:b3cc3c0776fc5fa8d6400",
+    };
 
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const dbRT = getDatabase(app);
 
-        <h4 style="color:#ff4d00;">Thông tin đơn hàng</h4>
-        <input type="text" name="tenSanPham" placeholder="Tên sản phẩm" required />
-        <input type="number" name="khoiLuong" placeholder="Khối lượng (gram)" required min="1" />
-        <input type="number" name="sokm" placeholder="Số km vận chuyển" required min="1" />
+    const BASE_SHIP_FEE = 15000;
+    const DOOR_TO_DOOR_FEE = 3000;
 
+    // DOM
+    const restaurantsListEl = document.getElementById("restaurants-list");
+    const restaurantCountEl = document.getElementById("restaurant-count");
+    const currentRestaurantNameEl = document.getElementById("current-restaurant-name");
+    const foodsListEl = document.getElementById("foods-list");
+    const extrasListEl = document.getElementById("extras-list");
+    const cartEl = document.getElementById("cart");
+    const placeOrderBtn = document.getElementById("place-order-btn");
+    const orderMessageEl = document.getElementById("order-message");
 
-        <select name="dichVu" required>
-          <option value="" disabled selected>Chọn dịch vụ</option>
-          <option value="standard">Dịch vụ tiêu chuẩn</option>
-          <option value="express">Giao hàng nhanh</option>
-        </select>
+    const customerNameInput = document.getElementById("customer-name");
+    const customerPhoneInput = document.getElementById("customer-phone");
+    const customerAddressInput = document.getElementById("customer-address");
+    const customerNoteInput = document.getElementById("customer-note");
 
+    const voucherCodeInput = document.getElementById("voucher-code-input");
+    const applyVoucherBtn = document.getElementById("apply-voucher-btn");
+    const voucherMessageEl = document.getElementById("voucher-message");
 
-        <button type="submit">Tạo đơn</button>
-      </form>
-    </div>
-  </section>
+    const deliveryEstimateTextEl = document.getElementById("delivery-estimate-text");
+    const toggleScheduleBtn = document.getElementById("toggle-schedule-btn");
+    const scheduleWrapperEl = document.getElementById("schedule-wrapper");
+    const scheduleDateInput = document.getElementById("schedule-date");
+    const scheduleTimeSelect = document.getElementById("schedule-time-slot");
 
+    const rewardsCheckbox = document.getElementById("rewards-enabled-checkbox");
+    const rewardsHintEl = document.getElementById("rewards-hint");
+    const doorToDoorCheckbox = document.getElementById("door-to-door-checkbox");
+    const utensilsCheckbox = document.getElementById("utensils-checkbox");
+    const paymentMethodSelect = document.getElementById("payment-method-select");
+    const driverTipCustomField = document.getElementById("driver-tip-custom-field");
+    const driverTipCustomInput = document.getElementById("driver-tip-custom");
 
-  <!-- Iframe ẩn -->
-  <iframe name="hidden_iframe" style="display:none;"></iframe>
+    const cartFab = document.getElementById("cart-fab");
+    const cartFabCountEl = document.getElementById("cart-fab-count");
+    const checkoutOverlayEl = document.getElementById("checkout-overlay");
+    const checkoutShellEl = document.querySelector(".checkout-shell");
+    const checkoutCloseBtn = document.getElementById("checkout-close-btn");
 
+    const displayAddressEl = document.getElementById("display-address");
+    const quickToolbarWrapper = document.getElementById("quick-toolbar-wrapper");
 
-  <!-- LIÊN HỆ -->
-  <section class="section contact">
-    <h2>📞 Liên hệ & Hỗ trợ</h2>
-    <p><strong>Hotline:</strong> 1900 1234</p>
-    <p><strong>Email:</strong> hotro@spxclone.vn</p>
-    <p><strong>Zalo:</strong> <a href="https://zalo.me/123456" target="_blank">https://zalo.me/123456</a></p>
-  </section>
+    // User / login DOM
+    const appUserBoxEl = document.getElementById("app-user");
+    const userNameDisplayEl = document.getElementById("user-name-display");
+    const userPhoneDisplayEl = document.getElementById("user-phone-display");
+    const changeAddressBtn = document.querySelector(".loc-change-btn");
 
+    const loginModalEl = document.getElementById("login-modal");
+    const loginNameInput = document.getElementById("login-name");
+    const loginPhoneInput = document.getElementById("login-phone");
+    const loginAddressInput = document.getElementById("login-address");
+    const loginSaveBtn = document.getElementById("login-save-btn");
+    const loginCancelBtn = document.getElementById("login-cancel-btn");
+    const loginCancelBtnFooter = document.getElementById("login-cancel-btn-footer");
+    const loginBackdropEl = loginModalEl ? loginModalEl.querySelector(".modal-backdrop") : null;
 
-  <!-- FOOTER -->
-  <footer>
-    © 2025 SPX Clone – <a href="#">Chính sách</a> – <a href="#">Hướng dẫn</a>
-  </footer>
+    let isCheckoutOpen = false;
+
+    let currentRestaurantId = "";
+    let currentRestaurantName = "";
+    let currentRestaurantPhone = "";
+    let currentRestaurantAddress = "";
+    let unsubscribeFoods = null;
+    let unsubscribeExtras = null;
+
+    let cartItems = [];
+    let appliedVoucher = null;
+
+    const DELIVERY_OPTIONS = {
+      PRIORITY: {
+        id: "PRIORITY",
+        label: "Ưu tiên",
+        minMinutes: 20,
+        maxMinutes: 30,
+        shipExtra: 5000,
+      },
+      STANDARD: {
+        id: "STANDARD",
+        label: "Tiêu chuẩn",
+        minMinutes: 30,
+        maxMinutes: 45,
+        shipExtra: 0,
+      },
+      SAVER: {
+        id: "SAVER",
+        label: "Tiết kiệm",
+        minMinutes: 45,
+        maxMinutes: 60,
+        shipExtra: -3000,
+      },
+    };
+
+    let selectedDeliveryOptionId = "STANDARD";
+    let scheduledDeliveryEnabled = false;
+    let scheduledDelivery = { date: "", timeSlot: "" };
+
+    let driverTip = 0;
+    let rewardsEnabled = true;
+    let doorToDoorEnabled = false;
+    let utensilsRequired = true;
+    let selectedPaymentMethod = paymentMethodSelect ? paymentMethodSelect.value : "COD";
+
+    let lastCartTotals = {
+      subtotal: 0,
+      shippingBaseTotal: 0,
+      discountTotal: 0,
+      shipDiscountTotal: 0,
+      driverTip: 0,
+      doorToDoorFee: 0,
+      shippingToPay: 0,
+      finalTotal: 0,
+    };
+
+    let currentUser = null;
+
+    // ===== LOGIN & USER INFO =====
+    function applyUserInfo(user) {
+      if (!user) return;
+      currentUser = user;
+
+      if (userNameDisplayEl && user.name) {
+        userNameDisplayEl.textContent = user.name;
+      }
+      if (userPhoneDisplayEl && user.phone) {
+        userPhoneDisplayEl.textContent = user.phone;
+        userPhoneDisplayEl.style.color = "#6b7280";
+      }
+
+      if (displayAddressEl && user.address) {
+        displayAddressEl.textContent = user.address;
+      }
+
+      if (customerNameInput && user.name) {
+        customerNameInput.value = user.name;
+      }
+      if (customerPhoneInput && user.phone) {
+        customerPhoneInput.value = user.phone;
+      }
+      if (customerAddressInput && user.address) {
+        customerAddressInput.value = user.address;
+      }
+    }
+
+    function loadUserFromStorage() {
+      try {
+        const raw = localStorage.getItem("appUser");
+        if (!raw) {
+          if (userNameDisplayEl) userNameDisplayEl.textContent = "Khách lạ";
+          if (userPhoneDisplayEl) {
+            userPhoneDisplayEl.textContent = "Đăng nhập để lưu địa chỉ";
+            userPhoneDisplayEl.style.color = "#9ca3af";
+          }
+          return;
+        }
+        const user = JSON.parse(raw);
+        if (user) applyUserInfo(user);
+      } catch (e) {
+        console.warn("Không đọc được user từ localStorage", e);
+      }
+    }
+
+    function openLoginModal() {
+      if (!loginModalEl) return;
+
+      if (currentUser) {
+        loginNameInput.value = currentUser.name || "";
+        loginPhoneInput.value = currentUser.phone || "";
+        loginAddressInput.value = currentUser.address || "";
+      } else {
+        loginNameInput.value = (customerNameInput && customerNameInput.value) || "";
+        loginPhoneInput.value = (customerPhoneInput && customerPhoneInput.value) || "";
+        loginAddressInput.value = (customerAddressInput && customerAddressInput.value) || "";
+      }
+
+      loginModalEl.classList.add("show");
+      setTimeout(() => {
+        if (loginNameInput) loginNameInput.focus();
+      }, 50);
+    }
+
+    function closeLoginModal() {
+      if (!loginModalEl) return;
+      loginModalEl.classList.remove("show");
+    }
+
+    if (appUserBoxEl) {
+      appUserBoxEl.addEventListener("click", openLoginModal);
+    }
+    if (changeAddressBtn) {
+      changeAddressBtn.addEventListener("click", openLoginModal);
+    }
+    if (loginBackdropEl) {
+      loginBackdropEl.addEventListener("click", closeLoginModal);
+    }
+    if (loginCancelBtn) {
+      loginCancelBtn.addEventListener("click", closeLoginModal);
+    }
+    if (loginCancelBtnFooter) {
+      loginCancelBtnFooter.addEventListener("click", closeLoginModal);
+    }
+    if (loginSaveBtn) {
+      loginSaveBtn.addEventListener("click", () => {
+        const name = loginNameInput.value.trim();
+        const phone = loginPhoneInput.value.trim();
+        const address = loginAddressInput.value.trim();
+
+        if (!name || !phone || !address) {
+          alert("Vui lòng nhập đầy đủ Họ tên, SĐT và Địa chỉ.");
+          return;
+        }
+
+        const user = { name, phone, address };
+        try {
+          localStorage.setItem("appUser", JSON.stringify(user));
+        } catch (e) {}
+
+        applyUserInfo(user);
+        closeLoginModal();
+      });
+    }
+
+    // Cho backend dùng nếu sau này gắn Firebase Auth
+    window.mockLogin = function (user) {
+      try {
+        localStorage.setItem("appUser", JSON.stringify(user));
+      } catch (e) {}
+      applyUserInfo(user);
+    };
+
+    // Tự lưu lại user khi sửa trực tiếp ở form giao hàng
+    function persistUserFromCheckout() {
+      try {
+        let raw = localStorage.getItem("appUser");
+        let user = {};
+        if (raw) {
+          user = JSON.parse(raw) || {};
+        }
+        if (customerNameInput) user.name = customerNameInput.value.trim() || user.name || "";
+        if (customerPhoneInput) user.phone = customerPhoneInput.value.trim() || user.phone || "";
+        if (customerAddressInput) user.address = customerAddressInput.value.trim() || user.address || "";
+
+        localStorage.setItem("appUser", JSON.stringify(user));
+        currentUser = user;
+        applyUserInfo(user);
+      } catch (e) {
+        console.warn("Không lưu được user từ checkout", e);
+      }
+    }
+
+    [customerNameInput, customerPhoneInput, customerAddressInput].forEach((el) => {
+      if (el) el.addEventListener("blur", persistUserFromCheckout);
+    });
+
+    loadUserFromStorage();
+
+    // ===== CHECKOUT SHEET MOBILE =====
+    function openCheckout() {
+      if (!checkoutShellEl) return;
+      if (window.innerWidth <= 900) {
+        checkoutShellEl.classList.add("open");
+        if (checkoutOverlayEl) checkoutOverlayEl.classList.add("show");
+      }
+      isCheckoutOpen = true;
+    }
+
+    function closeCheckout() {
+      if (!checkoutShellEl) return;
+      checkoutShellEl.classList.remove("open");
+      if (checkoutOverlayEl) checkoutOverlayEl.classList.remove("show");
+      isCheckoutOpen = false;
+    }
+
+    if (cartFab) {
+      cartFab.addEventListener("click", () => {
+        if (cartItems.length === 0) {
+          alert("Giỏ hàng đang trống.");
+          return;
+        }
+        openCheckout();
+      });
+    }
+
+    if (checkoutOverlayEl) {
+      checkoutOverlayEl.addEventListener("click", closeCheckout);
+    }
+
+    if (checkoutCloseBtn) {
+      checkoutCloseBtn.addEventListener("click", closeCheckout);
+    }
+
+    // Đồng bộ địa chỉ header khi gõ trực tiếp
+    if (displayAddressEl && customerAddressInput) {
+      const syncAddress = () => {
+        const v = customerAddressInput.value.trim();
+        if (!v) {
+          const raw = localStorage.getItem("appUser");
+          if (raw) {
+            try {
+              const user = JSON.parse(raw);
+              if (user && user.address) {
+                displayAddressEl.textContent = user.address;
+                return;
+              }
+            } catch (e) {}
+          }
+          displayAddressEl.textContent = "Chưa có địa chỉ";
+        } else {
+          displayAddressEl.textContent = v;
+        }
+      };
+      customerAddressInput.addEventListener("input", syncAddress);
+      syncAddress();
+    }
+
+    function updateDeliveryEstimate() {
+      if (!deliveryEstimateTextEl) return;
+
+      if (scheduledDeliveryEnabled && scheduledDelivery.date && scheduledDelivery.timeSlot) {
+        const [y, m, d] = scheduledDelivery.date.split("-");
+        const displayDate = scheduledDelivery.date ? `${d}/${m}/${y}` : "";
+        deliveryEstimateTextEl.textContent =
+          `Giao theo lịch: ${scheduledDelivery.timeSlot} ngày ${displayDate}.`;
+        return;
+      }
+
+      const opt = DELIVERY_OPTIONS[selectedDeliveryOptionId];
+      if (!opt) {
+        deliveryEstimateTextEl.textContent = "Chọn thời gian giao mong muốn.";
+        return;
+      }
+
+      deliveryEstimateTextEl.textContent =
+        `Dự kiến giao trong ${opt.minMinutes}–${opt.maxMinutes} phút (${opt.label}).`;
+    }
+
+    function updateRewardsHint() {
+      if (!rewardsHintEl) return;
+      if (!rewardsEnabled || !lastCartTotals.finalTotal) {
+        rewardsHintEl.textContent =
+          "Điểm thưởng được tính dựa trên tổng thanh toán (ước tính).";
+        return;
+      }
+      const estimatedCoins = Math.floor(lastCartTotals.finalTotal / 10000);
+      if (estimatedCoins <= 0) {
+        rewardsHintEl.textContent =
+          "Đơn hàng hiện chưa đủ để tích điểm đáng kể.";
+      } else {
+        rewardsHintEl.textContent =
+          `Ước tính nhận khoảng ${estimatedCoins} điểm thưởng cho đơn này (tạm tính).`;
+      }
+    }
+
+    // ===== LOAD RESTAURANTS =====
+    function subscribeRestaurants() {
+      const q = query(
+        collection(db, "restaurants"),
+        orderBy("createdAt", "desc")
+      );
+
+      onSnapshot(q, (snapshot) => {
+        restaurantsListEl.innerHTML = "";
+        let count = 0;
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const id = docSnap.id;
+
+          if (data.isActive === false) return;
+
+          count++;
+
+          const imageUrl = data.imageUrl || data.image || data.photoUrl || "";
+
+          const card = document.createElement("div");
+          card.className = "restaurant-card";
+          card.dataset.id = id;
+          card.dataset.name = data.name || "";
+          card.dataset.phone = data.phone || "";
+
+          card.innerHTML = `
+            <div class="restaurant-thumb">
+              ${
+                imageUrl
+                  ? `<img src="${imageUrl}" alt="${(data.name || "Quán ăn").replace(/"/g, "")}" class="thumb-img" />`
+                  : "🍱"
+              }
+            </div>
+            <div class="restaurant-body">
+              <div class="restaurant-name-row">
+                <div class="restaurant-name-text">${data.name || "Quán không tên"}</div>
+                <span class="badge-mini">#${count}</span>
+              </div>
+              <div class="restaurant-tags">
+                <span class="restaurant-tag-pill">Mở cửa</span>
+                <span class="restaurant-tag-pill">30–45 phút</span>
+              </div>
+              <div class="restaurant-meta">
+                ${data.address || ""}<br/>
+                ${data.phone ? "📞 " + data.phone : ""}
+              </div>
+            </div>
+          `;
+
+          card.addEventListener("click", () => {
+            document
+              .querySelectorAll(".restaurant-card")
+              .forEach((el) => el.classList.remove("selected"));
+            card.classList.add("selected");
+
+            currentRestaurantId = id;
+            currentRestaurantName = data.name || "Quán";
+            currentRestaurantPhone = data.phone || "";
+            currentRestaurantAddress = data.address || "";
+
+            currentRestaurantNameEl.textContent = currentRestaurantName;
+
+            subscribeFoods(id);
+            subscribeExtras(id);
+          });
+
+          restaurantsListEl.appendChild(card);
+        });
+
+        restaurantCountEl.textContent = count;
+        if (count === 0) {
+          restaurantsListEl.innerHTML =
+            '<div class="hint" style="padding:6px;">Chưa có quán nào được cấu hình.</div>';
+        }
+      });
+    }
+
+    // ===== LOAD FOODS =====
+    function subscribeFoods(restaurantId) {
+      if (unsubscribeFoods) unsubscribeFoods();
+      foodsListEl.innerHTML =
+        '<div class="hint" style="padding:8px;">Đang tải menu...</div>';
+
+      if (!restaurantId) return;
+
+      const foodsRef = ref(dbRT, "Food/" + restaurantId);
+      unsubscribeFoods = onValue(foodsRef, (snapshot) => {
+        renderFoods(snapshot);
+      });
+    }
+
+    function renderFoods(snapshot) {
+      foodsListEl.innerHTML = "";
+
+      if (!snapshot.exists()) {
+        foodsListEl.innerHTML =
+          '<div class="hint" style="padding:8px;">Quán này chưa có món nào.</div>';
+        return;
+      }
+
+      snapshot.forEach((childSnap) => {
+        const data = childSnap.val();
+        const key = childSnap.key;
+        const isActive = data.isActive !== false;
+        const price = Number(data.price) || 0;
+        const imageUrl = data.imageUrl || data.image || data.photoUrl || "";
+
+        const itemEl = document.createElement("div");
+        itemEl.className = "food-item";
+
+        itemEl.innerHTML = `
+          <div class="food-thumb">
+            ${
+              imageUrl
+                ? `<img src="${imageUrl}" alt="${(data.name || "Món ăn").replace(/"/g, "")}" />`
+                : "🍛"
+            }
+          </div>
+          <div class="food-info">
+            <div class="food-name">${data.name || ""}</div>
+            <div class="food-price">${price.toLocaleString("vi-VN")} đ</div>
+            ${
+              isActive
+                ? '<div class="food-status">Đang bán</div>'
+                : '<div class="food-status" style="color:#ef4444;">Ngưng bán</div>'
+            }
+          </div>
+          <div>
+            <button class="btn btn-primary" ${
+              !isActive ? "disabled style='opacity:0.5;cursor:not-allowed;'" : ""
+            } data-key="${key}">
+              Thêm
+            </button>
+          </div>
+        `;
+
+        const btn = itemEl.querySelector("button");
+        if (isActive) {
+          btn.addEventListener("click", () => {
+            addToCart(key, {
+              name: data.name || "",
+              price: price,
+            });
+          });
+        }
+
+        foodsListEl.appendChild(itemEl);
+      });
+    }
+
+    // ===== LOAD EXTRAS (MÓN PHỤ) =====
+    function subscribeExtras(restaurantId) {
+      if (unsubscribeExtras) unsubscribeExtras();
+      extrasListEl.innerHTML =
+        '<div class="hint" style="padding:8px;">Đang tải món phụ...</div>';
+
+      if (!restaurantId) return;
+
+      const extrasRef = ref(dbRT, "Extras/" + restaurantId);
+      unsubscribeExtras = onValue(extrasRef, (snapshot) => {
+        renderExtras(snapshot);
+      });
+    }
+
+    function renderExtras(snapshot) {
+      extrasListEl.innerHTML = "";
+
+      if (!snapshot.exists()) {
+        extrasListEl.innerHTML =
+          '<div class="hint" style="padding:8px;">Quán này chưa có món phụ.</div>';
+        return;
+      }
+
+      snapshot.forEach((childSnap) => {
+        const data = childSnap.val();
+        const key = childSnap.key;
+        const isActive = data.isActive !== false;
+        const price = Number(data.price) || 0;
+        const imageUrl = data.imageUrl || data.image || data.photoUrl || "";
+
+        const itemEl = document.createElement("div");
+        itemEl.className = "food-item";
+
+        itemEl.innerHTML = `
+          <div class="food-thumb">
+            ${
+              imageUrl
+                ? `<img src="${imageUrl}" alt="${(data.name || "Món phụ").replace(/"/g, "")}" />`
+                : "➕"
+            }
+          </div>
+          <div class="food-info">
+            <div class="food-name">${data.name || ""}</div>
+            <div class="food-price">${price.toLocaleString("vi-VN")} đ</div>
+            ${
+              isActive
+                ? '<div class="food-status">Món phụ</div>'
+                : '<div class="food-status" style="color:#ef4444;">Tạm ngưng</div>'
+            }
+          </div>
+          <div>
+            <button class="btn btn-secondary" ${
+              !isActive ? "disabled style='opacity:0.5;cursor:not-allowed;'" : ""
+            } data-extra-key="${key}">
+              Thêm
+            </button>
+          </div>
+        `;
+
+        const btn = itemEl.querySelector("button");
+        if (isActive) {
+          btn.addEventListener("click", () => {
+            addExtraToCart(key, {
+              name: data.name || "",
+              price: price,
+            });
+          });
+        }
+
+        extrasListEl.appendChild(itemEl);
+      });
+    }
+
+    // ===== CART =====
+    function addToCart(foodKey, { name, price }) {
+      if (!currentRestaurantId) {
+        alert("Vui lòng chọn quán trước khi thêm món.");
+        return;
+      }
+
+      const cartKey = currentRestaurantId + "__" + foodKey + "__FOOD";
+
+      const existing = cartItems.find((it) => it.key === cartKey);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cartItems.push({
+          key: cartKey,
+          foodKey: foodKey,
+          name: name,
+          price: price,
+          qty: 1,
+          restaurantId: currentRestaurantId,
+          restaurantName: currentRestaurantName || "Quán",
+          restaurantPhone: currentRestaurantPhone || "",
+          restaurantAddress: currentRestaurantAddress || "",
+          type: "FOOD",
+        });
+      }
+      renderCart();
+
+      if (window.innerWidth <= 900 && !isCheckoutOpen) {
+        openCheckout();
+      }
+    }
+
+    function addExtraToCart(extraKey, { name, price }) {
+      if (!currentRestaurantId) {
+        alert("Vui lòng chọn quán trước khi thêm món phụ.");
+        return;
+      }
+
+      const cartKey = currentRestaurantId + "__" + extraKey + "__EXTRA";
+
+      const existing = cartItems.find((it) => it.key === cartKey);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cartItems.push({
+          key: cartKey,
+          foodKey: extraKey,
+          name: name,
+          price: price,
+          qty: 1,
+          restaurantId: currentRestaurantId,
+          restaurantName: currentRestaurantName || "Quán",
+          restaurantPhone: currentRestaurantPhone || "",
+          restaurantAddress: currentRestaurantAddress || "",
+          type: "EXTRA",
+        });
+      }
+      renderCart();
+
+      if (window.innerWidth <= 900 && !isCheckoutOpen) {
+        openCheckout();
+      }
+    }
+
+    function updateQty(cartKey, delta) {
+      const item = cartItems.find((it) => it.key === cartKey);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cartItems = cartItems.filter((it) => it.key !== cartKey);
+      }
+      renderCart();
+    }
+
+    function computeVoucherDiscount(voucher, items) {
+      if (!voucher || !items || items.length === 0) {
+        return { discountTotal: 0, perRestaurant: {} };
+      }
+
+      const perRestaurantBase = {};
+
+      items.forEach((item) => {
+        const amount = item.price * item.qty;
+        if (amount <= 0) return;
+
+        if (voucher.applyType === "ALL") {
+          if (!perRestaurantBase[item.restaurantId]) {
+            perRestaurantBase[item.restaurantId] = 0;
+          }
+          perRestaurantBase[item.restaurantId] += amount;
+        } else if (voucher.applyType === "ITEM") {
+          if (
+            voucher.restaurantId &&
+            voucher.foodKey &&
+            item.restaurantId === voucher.restaurantId &&
+            item.foodKey === voucher.foodKey
+          ) {
+            if (!perRestaurantBase[item.restaurantId]) {
+              perRestaurantBase[item.restaurantId] = 0;
+            }
+            perRestaurantBase[item.restaurantId] += amount;
+          }
+        }
+      });
+
+      const baseValues = Object.values(perRestaurantBase);
+      if (baseValues.length === 0) {
+        return { discountTotal: 0, perRestaurant: {} };
+      }
+
+      const baseTotal = baseValues.reduce((sum, v) => sum + v, 0);
+      if (baseTotal <= 0) {
+        return { discountTotal: 0, perRestaurant: {} };
+      }
+
+      let discountTotal = 0;
+      const value = Number(voucher.value) || 0;
+
+      if (voucher.type === "PERCENT") {
+        discountTotal = Math.round(baseTotal * (value / 100));
+      } else if (voucher.type === "FIXED") {
+        discountTotal = Math.round(value);
+      }
+
+      if (discountTotal > baseTotal) {
+        discountTotal = baseTotal;
+      }
+      if (discountTotal <= 0) {
+        return { discountTotal: 0, perRestaurant: {} };
+      }
+
+      const perRestaurant = {};
+      const entries = Object.entries(perRestaurantBase);
+      let allocated = 0;
+
+      entries.forEach(([restaurantId, base], index) => {
+        let d = 0;
+        if (index === entries.length - 1) {
+          d = discountTotal - allocated;
+        } else {
+          d = Math.round((discountTotal * base) / baseTotal);
+          allocated += d;
+        }
+        if (d < 0) d = 0;
+        perRestaurant[restaurantId] = d;
+      });
+
+      return { discountTotal, perRestaurant };
+    }
+
+    function computeFreeShipInfo(voucher, items, baseShipFee) {
+      if (
+        !voucher ||
+        voucher.mode !== "FREESHIP" ||
+        !items ||
+        items.length === 0 ||
+        !baseShipFee ||
+        baseShipFee <= 0
+      ) {
+        return { shipDiscountTotal: 0, perRestaurant: {} };
+      }
+
+      const minQty = Number(voucher.minQty) || 0;
+      if (minQty <= 0) {
+        return { shipDiscountTotal: 0, perRestaurant: {} };
+      }
+
+      let shipDiscountTotal = 0;
+      const perRestaurant = {};
+
+      if (voucher.applyType === "ALL") {
+        const totalQty = items.reduce((sum, it) => sum + it.qty, 0);
+        if (totalQty < minQty) {
+          return { shipDiscountTotal: 0, perRestaurant: {} };
+        }
+
+        const restaurantIds = new Set(items.map((it) => it.restaurantId));
+        restaurantIds.forEach((rid) => {
+          perRestaurant[rid] = baseShipFee;
+          shipDiscountTotal += baseShipFee;
+        });
+      } else if (voucher.applyType === "ITEM") {
+        const targetRestaurantId = voucher.restaurantId;
+        const targetFoodKey = voucher.foodKey;
+
+        if (!targetRestaurantId || !targetFoodKey) {
+          return { shipDiscountTotal: 0, perRestaurant: {} };
+        }
+
+        const qtyByRestaurant = {};
+        items.forEach((item) => {
+          if (
+            item.restaurantId === targetRestaurantId &&
+            item.foodKey === targetFoodKey
+          ) {
+            if (!qtyByRestaurant[item.restaurantId]) {
+              qtyByRestaurant[item.restaurantId] = 0;
+            }
+            qtyByRestaurant[item.restaurantId] += item.qty;
+          }
+        });
+
+        Object.entries(qtyByRestaurant).forEach(([rid, qty]) => {
+          if (qty >= minQty) {
+            perRestaurant[rid] = baseShipFee;
+            shipDiscountTotal += baseShipFee;
+          }
+        });
+      }
+
+      return { shipDiscountTotal, perRestaurant };
+    }
+
+    function renderCart() {
+      cartEl.innerHTML = "";
+      lastCartTotals = {
+        subtotal: 0,
+        shippingBaseTotal: 0,
+        discountTotal: 0,
+        shipDiscountTotal: 0,
+        driverTip: driverTip,
+        doorToDoorFee: doorToDoorEnabled ? DOOR_TO_DOOR_FEE : 0,
+        shippingToPay: 0,
+        finalTotal: 0,
+      };
+
+      const panels = document.querySelectorAll(".collapsible-panel");
+
+      if (cartItems.length === 0) {
+        cartEl.innerHTML =
+          '<div class="hint">Chưa có món nào. Hãy bấm "Thêm" ở danh sách món.</div>';
+        appliedVoucher = null;
+        voucherMessageEl.textContent = "";
+        voucherMessageEl.className = "hint";
+        placeOrderBtn.textContent = "🛒 Gửi đơn đặt món";
+        placeOrderBtn.disabled = true;
+
+        if (checkoutShellEl && window.innerWidth > 900) {
+          checkoutShellEl.classList.remove("visible");
+        }
+        if (quickToolbarWrapper) {
+          quickToolbarWrapper.style.display = "none";
+        }
+        panels.forEach((p) => p.classList.add("hidden-panel"));
+
+        if (cartFabCountEl) cartFabCountEl.textContent = "0";
+        if (cartFab) cartFab.classList.remove("show");
+
+        updateRewardsHint();
+        return;
+      }
+
+      if (checkoutShellEl && window.innerWidth > 900) {
+        checkoutShellEl.classList.add("visible");
+      }
+      if (quickToolbarWrapper) {
+        quickToolbarWrapper.style.display = "block";
+      }
+
+      // Khi vừa có món, hiện panel voucher mặc định
+      const voucherPanel = document.getElementById("voucher-panel");
+      const extrasPanel = document.getElementById("extras-panel");
+      const paymentPanel = document.getElementById("payment-panel");
+      if (voucherPanel) voucherPanel.classList.remove("hidden-panel");
+      if (extrasPanel) extrasPanel.classList.add("hidden-panel");
+      if (paymentPanel) paymentPanel.classList.add("hidden-panel");
+
+      placeOrderBtn.disabled = false;
+
+      let subtotal = 0;
+      const groups = {};
+
+      cartItems.forEach((item) => {
+        subtotal += item.price * item.qty;
+        if (!groups[item.restaurantId]) {
+          groups[item.restaurantId] = {
+            restaurantName: item.restaurantName,
+            items: [],
+          };
+        }
+        groups[item.restaurantId].items.push(item);
+      });
+
+      Object.values(groups).forEach((group) => {
+        const header = document.createElement("div");
+        header.style.margin = "6px 0 4px";
+        header.style.fontWeight = "600";
+        header.style.fontSize = "12px";
+        header.textContent = group.restaurantName;
+        cartEl.appendChild(header);
+
+        group.items.forEach((item) => {
+          const displayName = item.type === "EXTRA" ? `${item.name} (phụ)` : item.name;
+          const row = document.createElement("div");
+          row.className = "cart-item";
+          row.innerHTML = `
+            <div class="cart-item-name">${displayName}</div>
+            <div class="cart-item-qty">
+              <button data-action="dec" data-key="${item.key}">-</button>
+              <span>${item.qty}</span>
+              <button data-action="inc" data-key="${item.key}">+</button>
+            </div>
+            <div>${(item.price * item.qty).toLocaleString("vi-VN")} đ</div>
+          `;
+          cartEl.appendChild(row);
+        });
+      });
+
+      let discountInfo = { discountTotal: 0, perRestaurant: {} };
+      let shipInfo = { shipDiscountTotal: 0, perRestaurant: {} };
+
+      if (appliedVoucher) {
+        if (appliedVoucher.mode === "FREESHIP") {
+          shipInfo = computeFreeShipInfo(appliedVoucher, cartItems, BASE_SHIP_FEE);
+        } else {
+          discountInfo = computeVoucherDiscount(appliedVoucher, cartItems);
+        }
+      }
+
+      const discountTotal = discountInfo.discountTotal || 0;
+
+      const restaurantIds = Object.keys(groups);
+      const deliveryOpt =
+        DELIVERY_OPTIONS[selectedDeliveryOptionId] || DELIVERY_OPTIONS.STANDARD;
+      const shipExtraPerRestaurant = deliveryOpt.shipExtra || 0;
+      const effectiveBaseShipPerRestaurant = Math.max(
+        BASE_SHIP_FEE + shipExtraPerRestaurant,
+        0
+      );
+
+      const shippingBeforeDiscount =
+        restaurantIds.length * effectiveBaseShipPerRestaurant;
+      const shipDiscountTotal = shipInfo.shipDiscountTotal || 0;
+      const shippingToPay = Math.max(
+        shippingBeforeDiscount - shipDiscountTotal,
+        0
+      );
+
+      const doorFee = doorToDoorEnabled ? DOOR_TO_DOOR_FEE : 0;
+
+      const finalTotal = Math.max(
+        subtotal - discountTotal + shippingToPay + driverTip + doorFee,
+        0
+      );
+
+      lastCartTotals = {
+        subtotal,
+        shippingBaseTotal: shippingBeforeDiscount,
+        discountTotal,
+        shipDiscountTotal,
+        driverTip,
+        doorToDoorFee: doorFee,
+        shippingToPay,
+        finalTotal,
+      };
+
+      const summary = document.createElement("div");
+      summary.style.marginTop = "6px";
+      summary.style.fontSize = "12px";
+      summary.innerHTML = `
+        <div style="display:flex;justify-content:space-between;">
+          <span>Tổng giá món:</span>
+          <span>${subtotal.toLocaleString("vi-VN")} đ</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span>Phí ship dự kiến (${restaurantIds.length} quán):</span>
+          <span>${shippingBeforeDiscount.toLocaleString("vi-VN")} đ</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span>Hình thức giao:</span>
+          <span>${deliveryOpt.label}</span>
+        </div>
+        ${
+          appliedVoucher &&
+          (appliedVoucher.mode === "DISCOUNT" || !appliedVoucher.mode) &&
+          discountTotal > 0
+            ? `<div style="display:flex;justify-content:space-between;color:#16a34a;">
+                 <span>Giảm giá (${appliedVoucher.code}):</span>
+                 <span>- ${discountTotal.toLocaleString("vi-VN")} đ</span>
+               </div>`
+            : ""
+        }
+        ${
+          appliedVoucher &&
+          appliedVoucher.mode === "FREESHIP" &&
+          shipDiscountTotal > 0
+            ? `<div style="display:flex;justify-content:space-between;color:#16a34a;">
+                 <span>Free ship (${appliedVoucher.code}):</span>
+                 <span>- ${shipDiscountTotal.toLocaleString("vi-VN")} đ</span>
+               </div>`
+            : ""
+        }
+        ${
+          driverTip > 0
+            ? `<div style="display:flex;justify-content:space-between;">
+                 <span>Thưởng cho tài xế:</span>
+                 <span>+ ${driverTip.toLocaleString("vi-VN")} đ</span>
+               </div>`
+            : ""
+        }
+        ${
+          doorFee > 0
+            ? `<div style="display:flex;justify-content:space-between;">
+                 <span>Phí giao tận cửa:</span>
+                 <span>+ ${doorFee.toLocaleString("vi-VN")} đ</span>
+               </div>`
+            : ""
+        }
+        <div style="border-top:1px dashed #e5e7eb;margin:6px 0;"></div>
+        <div style="display:flex;justify-content:space-between;font-weight:600;margin-top:2px;">
+          <span>Tổng thanh toán (ước tính):</span>
+          <span>${finalTotal.toLocaleString("vi-VN")} đ</span>
+        </div>
+      `;
+      cartEl.appendChild(summary);
+
+      cartEl.querySelectorAll("button[data-action]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const key = btn.dataset.key;
+          const action = btn.dataset.action;
+          updateQty(key, action === "inc" ? 1 : -1);
+        });
+      });
+
+      if (!appliedVoucher) {
+        voucherMessageEl.textContent = "";
+        voucherMessageEl.className = "hint";
+      } else if (appliedVoucher.mode === "FREESHIP") {
+        const minQty = Number(appliedVoucher.minQty) || 0;
+        if (minQty <= 0) {
+          voucherMessageEl.textContent =
+            "Mã free ship chưa được cấu hình số lượng tối thiểu hợp lệ.";
+          voucherMessageEl.className = "warning";
+        } else if (shipDiscountTotal > 0) {
+          voucherMessageEl.textContent =
+            `Đang áp dụng mã ${appliedVoucher.code}: free ship (đã đạt từ ${minQty} phần trở lên).`;
+          voucherMessageEl.className = "success";
+        } else {
+          voucherMessageEl.textContent =
+            `Chưa đủ số lượng để áp dụng mã free ship này (cần tối thiểu ${minQty} phần).`;
+          voucherMessageEl.className = "warning";
+        }
+      } else {
+        if (discountTotal > 0) {
+          voucherMessageEl.textContent =
+            `Đang áp dụng mã ${appliedVoucher.code}: giảm ${discountTotal.toLocaleString("vi-VN")} đ.`;
+          voucherMessageEl.className = "success";
+        } else {
+          voucherMessageEl.textContent =
+            "Mã giảm giá hiện không áp dụng cho giỏ hàng này (kiểm tra món hoặc điều kiện).";
+          voucherMessageEl.className = "warning";
+        }
+      }
+
+      placeOrderBtn.textContent = `🛒 Đặt đơn – ${finalTotal.toLocaleString("vi-VN")} đ`;
+
+      const totalQty = cartItems.reduce((sum, it) => sum + it.qty, 0);
+      if (cartFabCountEl) {
+        cartFabCountEl.textContent = totalQty;
+      }
+      if (cartFab) {
+        if (totalQty > 0) {
+          cartFab.classList.add("show");
+        } else {
+          cartFab.classList.remove("show");
+        }
+      }
+
+      updateRewardsHint();
+    }
+
+    function formatThoiGian(date) {
+      const pad = (n) => (n < 10 ? "0" + n : "" + n);
+      const h = pad(date.getHours());
+      const m = pad(date.getMinutes());
+      const s = pad(date.getSeconds());
+      const d = pad(date.getDate());
+      const mo = pad(date.getMonth() + 1);
+      const y = date.getFullYear();
+      return `${h}:${m}:${s} ${d}/${mo}/${y}`;
+    }
+
+    function generateSku(date, index = 0) {
+      const pad = (n) => (n < 10 ? "0" + n : "" + n);
+      const y = date.getFullYear();
+      const mo = pad(date.getMonth() + 1);
+      const d = pad(date.getDate());
+      const h = pad(date.getHours());
+      const mi = pad(date.getMinutes());
+      const s = pad(date.getSeconds());
+      let base = `SPX-${y}${mo}${d}${h}${mi}${s}`;
+      if (index > 0) {
+        base += "-" + index;
+      }
+      return base;
+    }
+
+    function buildTenSanPhamFromCart(items) {
+      if (items.length === 0) return "";
+      if (items.length === 1) {
+        return `${items[0].name} x${items[0].qty}`;
+      }
+      const first = `${items[0].name} x${items[0].qty}`;
+      const moreCount = items.length - 1;
+      return `${first} + ${moreCount} món khác`;
+    }
+
+    // ===== VOUCHER BTN =====
+    applyVoucherBtn.addEventListener("click", async () => {
+      voucherMessageEl.textContent = "";
+      voucherMessageEl.className = "hint";
+
+      const rawCode = voucherCodeInput.value.trim();
+      if (!rawCode) {
+        appliedVoucher = null;
+        renderCart();
+        voucherMessageEl.textContent = "Đã xoá mã khuyến mãi.";
+        voucherMessageEl.className = "hint";
+        return;
+      }
+
+      if (cartItems.length === 0) {
+        voucherMessageEl.textContent = "Giỏ hàng đang trống, chưa thể áp dụng mã.";
+        voucherMessageEl.className = "warning";
+        return;
+      }
+
+      const code = rawCode.toUpperCase();
+
+      try {
+        const vouchersRef = collection(db, "vouchers");
+        const q = query(vouchersRef, where("code", "==", code));
+        const snap = await getDocs(q);
+
+        if (snap.empty) {
+          appliedVoucher = null;
+          renderCart();
+          voucherMessageEl.textContent = "Mã khuyến mãi không tồn tại.";
+          voucherMessageEl.className = "warning";
+          return;
+        }
+
+        const docSnap = snap.docs[0];
+        const data = docSnap.data();
+
+        if (data.isActive === false) {
+          appliedVoucher = null;
+          renderCart();
+          voucherMessageEl.textContent =
+            "Mã khuyến mãi đã bị tắt / không còn hiệu lực.";
+          voucherMessageEl.className = "warning";
+          return;
+        }
+
+        const voucher = {
+          id: docSnap.id,
+          code: data.code || code,
+          mode: data.mode || "DISCOUNT",
+          type: data.type || "PERCENT",
+          value: Number(data.value) || 0,
+          applyType: data.applyType || "ALL",
+          restaurantId: data.restaurantId || null,
+          foodKey: data.foodKey || null,
+          foodName: data.foodName || "",
+          isActive: data.isActive !== false,
+          minQty: data.minQty ? Number(data.minQty) : 0,
+        };
+
+        appliedVoucher = voucher;
+        renderCart();
+      } catch (err) {
+        console.error(err);
+        appliedVoucher = null;
+        renderCart();
+        voucherMessageEl.textContent =
+          "Không áp dụng được mã khuyến mãi: " + (err.message || "");
+        voucherMessageEl.className = "warning";
+      }
+    });
+
+    // ===== DELIVERY UI =====
+    function initDeliveryOptionsUI() {
+      const buttons = document.querySelectorAll("[data-delivery-option]");
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.deliveryOption;
+          if (!id) return;
+          selectedDeliveryOptionId = id;
+
+          scheduledDeliveryEnabled = false;
+          scheduledDelivery = { date: "", timeSlot: "" };
+          if (scheduleWrapperEl) {
+            scheduleWrapperEl.classList.add("hidden");
+            if (scheduleDateInput) scheduleDateInput.value = "";
+            if (scheduleTimeSelect) scheduleTimeSelect.value = "";
+          }
+
+          buttons.forEach((b) => b.classList.remove("selected"));
+          btn.classList.add("selected");
+
+          updateDeliveryEstimate();
+          renderCart();
+        });
+      });
+
+      if (toggleScheduleBtn && scheduleWrapperEl) {
+        toggleScheduleBtn.addEventListener("click", () => {
+          const isHidden = scheduleWrapperEl.classList.contains("hidden");
+          if (isHidden) {
+            scheduleWrapperEl.classList.remove("hidden");
+            scheduledDeliveryEnabled = true;
+            const todayStr = new Date().toISOString().slice(0, 10);
+            if (scheduleDateInput && !scheduleDateInput.value) {
+              scheduleDateInput.value = todayStr;
+              scheduledDelivery.date = todayStr;
+            }
+          } else {
+            scheduleWrapperEl.classList.add("hidden");
+            scheduledDeliveryEnabled = false;
+            scheduledDelivery = { date: "", timeSlot: "" };
+          }
+          updateDeliveryEstimate();
+          renderCart();
+        });
+      }
+
+      if (scheduleDateInput) {
+        scheduleDateInput.addEventListener("change", () => {
+          scheduledDeliveryEnabled = true;
+          scheduledDelivery.date = scheduleDateInput.value;
+          updateDeliveryEstimate();
+        });
+      }
+
+      if (scheduleTimeSelect) {
+        scheduleTimeSelect.addEventListener("change", () => {
+          scheduledDeliveryEnabled = true;
+          scheduledDelivery.timeSlot = scheduleTimeSelect.value;
+          updateDeliveryEstimate();
+        });
+      }
+
+      updateDeliveryEstimate();
+    }
+
+    // ===== TIP UI =====
+    function initDriverTipUI() {
+      const tipButtons = document.querySelectorAll("[data-tip-value]");
+
+      function setTip(value) {
+        driverTip = value;
+        renderCart();
+      }
+
+      tipButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const val = btn.dataset.tipValue;
+          tipButtons.forEach((b) => b.classList.remove("pill-selected"));
+          btn.classList.add("pill-selected");
+
+          if (val === "CUSTOM") {
+            if (driverTipCustomField) {
+              driverTipCustomField.style.display = "flex";
+            }
+            if (driverTipCustomInput) {
+              driverTipCustomInput.focus();
+            }
+          } else {
+            if (driverTipCustomField) {
+              driverTipCustomField.style.display = "none";
+            }
+            if (driverTipCustomInput) {
+              driverTipCustomInput.value = "";
+            }
+            const num = Number(val) || 0;
+            setTip(num);
+          }
+        });
+      });
+
+      if (driverTipCustomInput) {
+        driverTipCustomInput.addEventListener("change", () => {
+          const num = Number(driverTipCustomInput.value) || 0;
+          driverTip = num;
+          renderCart();
+        });
+      }
+
+      driverTip = 0;
+    }
+
+    // ===== TOGGLES & PAYMENT =====
+    function initPreferencesAndPaymentUI() {
+      if (rewardsCheckbox) {
+        rewardsCheckbox.addEventListener("change", () => {
+          rewardsEnabled = rewardsCheckbox.checked;
+          updateRewardsHint();
+        });
+      }
+
+      if (doorToDoorCheckbox) {
+        doorToDoorCheckbox.addEventListener("change", () => {
+          doorToDoorEnabled = doorToDoorCheckbox.checked;
+          renderCart();
+        });
+      }
+
+      if (utensilsCheckbox) {
+        utensilsCheckbox.addEventListener("change", () => {
+          utensilsRequired = utensilsCheckbox.checked;
+        });
+      }
+
+      if (paymentMethodSelect) {
+        selectedPaymentMethod = paymentMethodSelect.value;
+        paymentMethodSelect.addEventListener("change", () => {
+          selectedPaymentMethod = paymentMethodSelect.value;
+        });
+      }
+    }
+
+    // ===== QUICK TOOLBAR =====
+    function initQuickToolbarUI() {
+      const buttons = document.querySelectorAll(".quick-icon-btn");
+      const panels = document.querySelectorAll(".collapsible-panel");
+
+      function showPanel(panelId) {
+        panels.forEach((p) => {
+          if (p.id === panelId) {
+            p.classList.remove("hidden-panel");
+          } else if (p.id === "voucher-panel" || p.id === "extras-panel" || p.id === "payment-panel") {
+            p.classList.add("hidden-panel");
+          }
+        });
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.dataset.panel;
+          if (!target) return;
+          buttons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          showPanel(target);
+        });
+      });
+
+      if (buttons.length > 0) {
+        const first = buttons[0];
+        first.classList.add("active");
+      }
+    }
+
+    // ===== PLACE ORDER =====
+    placeOrderBtn.addEventListener("click", async () => {
+      orderMessageEl.textContent = "";
+      orderMessageEl.className = "";
+
+      if (cartItems.length === 0) {
+        orderMessageEl.textContent = "Giỏ hàng đang trống.";
+        orderMessageEl.className = "warning";
+        return;
+      }
+
+      const customerName = customerNameInput.value.trim();
+      const customerPhone = customerPhoneInput.value.trim();
+      const customerAddress = customerAddressInput.value.trim();
+      const customerNote = customerNoteInput.value.trim();
+
+      if (!customerName || !customerPhone || !customerAddress) {
+        orderMessageEl.textContent =
+          "Vui lòng nhập đầy đủ Họ tên, Số điện thoại và Địa chỉ.";
+        orderMessageEl.className = "warning";
+        return;
+      }
+
+      if (!selectedPaymentMethod) {
+        orderMessageEl.textContent =
+          "Vui lòng chọn phương thức thanh toán.";
+        orderMessageEl.className = "warning";
+        return;
+      }
+
+      if (
+        scheduledDeliveryEnabled &&
+        (!scheduledDelivery.date || !scheduledDelivery.timeSlot)
+      ) {
+        orderMessageEl.textContent =
+          "Vui lòng chọn đầy đủ ngày và khung giờ giao khi bật hẹn giờ.";
+        orderMessageEl.className = "warning";
+        return;
+      }
+
+      const groupsMap = new Map();
+      cartItems.forEach((item) => {
+        if (!groupsMap.has(item.restaurantId)) {
+          groupsMap.set(item.restaurantId, {
+            restaurantName: item.restaurantName,
+            restaurantPhone: item.restaurantPhone || "",
+            restaurantAddress: item.restaurantAddress || "",
+            items: [],
+          });
+        }
+        groupsMap.get(item.restaurantId).items.push(item);
+      });
+
+      if (groupsMap.size === 0) {
+        orderMessageEl.textContent = "Giỏ hàng không có món hợp lệ.";
+        orderMessageEl.className = "warning";
+        return;
+      }
+
+      let discountInfo = { discountTotal: 0, perRestaurant: {} };
+      let shipInfo = { shipDiscountTotal: 0, perRestaurant: {} };
+
+      if (appliedVoucher) {
+        if (appliedVoucher.mode === "FREESHIP") {
+          shipInfo = computeFreeShipInfo(appliedVoucher, cartItems, BASE_SHIP_FEE);
+        } else {
+          discountInfo = computeVoucherDiscount(appliedVoucher, cartItems);
+        }
+      }
+
+      const deliveryOpt =
+        DELIVERY_OPTIONS[selectedDeliveryOptionId] || DELIVERY_OPTIONS.STANDARD;
+      const shipExtraPerRestaurant = deliveryOpt.shipExtra || 0;
+      const effectiveBaseShipPerRestaurant = Math.max(
+        BASE_SHIP_FEE + shipExtraPerRestaurant,
+        0
+      );
+
+      const groupEntries = Array.from(groupsMap.entries());
+      const groupCount = groupEntries.length;
+      let remainingTip = driverTip;
+      let remainingDoorFee = doorToDoorEnabled ? DOOR_TO_DOOR_FEE : 0;
+
+      try {
+        const promises = [];
+        let index = 0;
+
+        for (const [restaurantId, group] of groupEntries) {
+          index += 1;
+          const orderTime = new Date();
+          const thoiGian = formatThoiGian(orderTime);
+          const sku = generateSku(orderTime, index);
+
+          const itemsSubtotal = group.items.reduce(
+            (sum, item) => sum + item.price * item.qty,
+            0
+          );
+
+          const itemDiscount =
+            (discountInfo.perRestaurant &&
+              discountInfo.perRestaurant[restaurantId]) ||
+            0;
+
+          const baseShip = effectiveBaseShipPerRestaurant;
+          const shipDiscount =
+            (shipInfo.perRestaurant &&
+              shipInfo.perRestaurant[restaurantId]) ||
+            0;
+
+          const netItems = Math.max(itemsSubtotal - itemDiscount, 0);
+          const netShip = Math.max(baseShip - shipDiscount, 0);
+
+          let tipForThis = 0;
+          if (driverTip > 0) {
+            if (index === groupCount) {
+              tipForThis = remainingTip;
+            } else {
+              tipForThis = Math.round(driverTip / groupCount);
+              remainingTip -= tipForThis;
+            }
+          }
+
+          let doorFeeForThis = 0;
+          if (doorToDoorEnabled && DOOR_TO_DOOR_FEE > 0) {
+            if (index === groupCount) {
+              doorFeeForThis = remainingDoorFee;
+            } else {
+              doorFeeForThis = Math.round(DOOR_TO_DOOR_FEE / groupCount);
+              remainingDoorFee -= doorFeeForThis;
+            }
+          }
+
+          const tongGiaTruocGiam =
+            itemsSubtotal + baseShip + tipForThis + doorFeeForThis;
+          const giamGia = itemDiscount + shipDiscount;
+          const phiThuHo = Math.max(tongGiaTruocGiam - giamGia, 0);
+
+          const tenSanPham = buildTenSanPhamFromCart(group.items);
+
+          const freeShip =
+            appliedVoucher &&
+            appliedVoucher.mode === "FREESHIP" &&
+            shipDiscount > 0;
+
+          const orderData = {
+            diaChiNguoiNhan: customerAddress,
+            dichVu: "express",
+            giaTriDon: netItems,
+            khoiLuong: 1,
+            phiThuHo: phiThuHo,
+            phuongThucThanhToan: selectedPaymentMethod,
+            sku: sku,
+            soDienThoaiNguoiGui: group.restaurantPhone || "",
+            diaChiNguoiGui: group.restaurantAddress || "",
+            sdtNguoiNhan: customerPhone,
+            soKm: 0,
+            tenNguoiGui: group.restaurantName,
+            tenNguoiNhan: customerName,
+            tenSanPham: tenSanPham,
+            thoiGian: thoiGian,
+            trangThai: "Đang xử lý",
+            ghiChu: customerNote || "",
+            restaurantId: restaurantId,
+
+            tongGiaTruocGiam: tongGiaTruocGiam,
+            giamGia: giamGia,
+            maGiamGia: appliedVoucher ? appliedVoucher.code : "",
+            voucherMode: appliedVoucher ? appliedVoucher.mode : "",
+            phiShipGoc: baseShip,
+            phiShipGiam: shipDiscount,
+            phiShipThu: netShip,
+            freeShip: freeShip,
+
+            kieuGiaoHang: deliveryOpt.label,
+            kieuGiaoHangId: selectedDeliveryOptionId,
+            giaoHenGio: scheduledDeliveryEnabled,
+            ngayHenGiao: scheduledDeliveryEnabled ? scheduledDelivery.date : "",
+            khungGioHenGiao: scheduledDeliveryEnabled ? scheduledDelivery.timeSlot : "",
+            tienTipTaiXe: tipForThis,
+            tongTienTip: driverTip,
+            giaoTanCua: doorToDoorEnabled,
+            phiGiaoTanCua: doorFeeForThis,
+            layDungCuAnUong: utensilsRequired,
+            nhanDiemThuong: rewardsEnabled,
+            tongTienUocTinh: lastCartTotals.finalTotal,
+          };
+
+          const orderRef = ref(dbRT, "donhang/" + sku);
+          promises.push(set(orderRef, orderData));
+        }
+
+        await Promise.all(promises);
+
+        orderMessageEl.textContent =
+          `Đã gửi ${groupsMap.size} đơn (ứng với ${groupsMap.size} quán). Quán sẽ xử lý sớm.`;
+        orderMessageEl.className = "success";
+
+        cartItems = [];
+        appliedVoucher = null;
+        voucherCodeInput.value = "";
+        voucherMessageEl.textContent = "";
+        voucherMessageEl.className = "hint";
+
+        driverTip = 0;
+        if (doorToDoorCheckbox) {
+          doorToDoorCheckbox.checked = false;
+        }
+        doorToDoorEnabled = false;
+        if (utensilsCheckbox) {
+          utensilsCheckbox.checked = true;
+        }
+        utensilsRequired = true;
+        if (rewardsCheckbox) {
+          rewardsCheckbox.checked = true;
+        }
+        rewardsEnabled = true;
+        selectedDeliveryOptionId = "STANDARD";
+        if (scheduleWrapperEl) {
+          scheduleWrapperEl.classList.add("hidden");
+        }
+        scheduledDeliveryEnabled = false;
+        scheduledDelivery = { date: "", timeSlot: "" };
+        if (scheduleDateInput) scheduleDateInput.value = "";
+        if (scheduleTimeSelect) scheduleTimeSelect.value = "";
+
+        document
+          .querySelectorAll("[data-tip-value]")
+          .forEach((btn) => btn.classList.remove("pill-selected"));
+        const noTipBtn = document.querySelector('[data-tip-value="0"]');
+        if (noTipBtn) {
+          noTipBtn.classList.add("pill-selected");
+        }
+        if (driverTipCustomField) {
+          driverTipCustomField.style.display = "none";
+        }
+        if (driverTipCustomInput) {
+          driverTipCustomInput.value = "";
+        }
+
+        updateDeliveryEstimate();
+        renderCart();
+        closeCheckout();
+        customerNoteInput.value = "";
+      } catch (err) {
+        console.error(err);
+        orderMessageEl.textContent =
+          "Gửi đơn thất bại: " + (err.message || "");
+        orderMessageEl.className = "warning";
+      }
+    });
+
+    // Init UI
+    initQuickToolbarUI();
+    initDeliveryOptionsUI();
+    initDriverTipUI();
+    initPreferencesAndPaymentUI();
+
+    subscribeRestaurants();
+    renderCart();
+  </script>
 </body>
 </html>
-
-
